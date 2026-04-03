@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>支援する · Support — The Art of Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #04030a;
+  --deep: #0a0818;
+  --ink: #12102a;
+  --gold: #c9a84c;
+  --gold-dim: #7a6030;
+  --ash: #8a8899;
+  --light: #e8e4f0;
+  --ember: #e8734a;
+  --mist: rgba(201,168,76,0.06);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--light);
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(4,3,10,0.97), transparent);
+}
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.lang-btn {
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--ash);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+.lang-btn:hover { border-color: var(--gold); color: var(--gold); }
+.back-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8rem 4rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 30% at 20% 80%, rgba(232,115,74,0.04) 0%, transparent 60%),
+    var(--void);
+}
+.particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.particle {
+  position: absolute; width: 1px; height: 1px;
+  background: var(--gold); border-radius: 50%;
+  animation: float linear infinite; opacity: 0;
+}
+@keyframes float {
+  0% { transform: translateY(100vh); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
+}
+.hero-eyebrow {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+  letter-spacing: 0.5em;
+  color: var(--gold-dim);
+  margin-bottom: 2rem;
+  animation: fadeUp 1.5s ease forwards;
+  opacity: 0;
+  position: relative;
+}
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  animation: fadeUp 1.5s 0.3s ease forwards;
+  opacity: 0;
+  position: relative;
+}
+.hero-title em {
+  color: var(--gold);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+}
+.hero-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.2em;
+  color: var(--ash);
+  margin-top: 2.5rem;
+  line-height: 2.4;
+  max-width: 600px;
+  animation: fadeUp 1.5s 0.6s ease forwards;
+  opacity: 0;
+  position: relative;
+}
+.hero-line {
+  width: 1px; height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+  margin-top: 4rem;
+  animation: fadeUp 1.5s 0.9s ease forwards;
+  opacity: 0;
+  position: relative;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PROGRESS */
+.progress-section {
+  padding: 6rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+}
+.accent-line {
+  width: 40px; height: 1px;
+  background: var(--gold-dim);
+  margin: 1.2rem auto;
+}
+.progress-numbers {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.progress-raised {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.progress-goal {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  color: var(--ash);
+}
+.progress-bar-wrap {
+  width: 100%;
+  height: 2px;
+  background: rgba(201,168,76,0.12);
+  position: relative;
+  margin-bottom: 0.8rem;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--gold-dim), var(--gold));
+  width: 0%;
+  transition: width 2s ease;
+}
+.progress-label {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--ash);
+}
+.progress-deadline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--gold-dim);
+  margin-top: 0.5rem;
+}
+
+/* MISSION TEXT */
+.mission-section {
+  padding: 6rem 4rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.spenden-text {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  line-height: 2.8;
+  color: var(--light);
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+.spenden-divider {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+  margin: 2rem auto;
+}
+
+/* DONATE */
+.donate-section {
+  padding: 6rem 4rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.donate-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  letter-spacing: 0.1em;
+  color: var(--light);
+  margin-bottom: 1rem;
+}
+.donate-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+  margin-bottom: 3rem;
+  line-height: 2.2;
+}
+.amount-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.amount-btn {
+  padding: 1rem 0.5rem;
+  border: 1px solid var(--gold-dim);
+  background: transparent;
+  color: var(--ash);
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.amount-btn:hover, .amount-btn.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.06);
+}
+.custom-amount {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--light);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: 2rem;
+  transition: border-color 0.3s;
+  outline: none;
+}
+.custom-amount::placeholder { color: var(--gold-dim); }
+.custom-amount:focus { border-color: var(--gold-dim); }
+.donate-btn {
+  display: inline-block;
+  padding: 1.2rem 4rem;
+  border: 1px solid var(--gold);
+  color: var(--void);
+  background: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  cursor: pointer;
+  transition: all 0.4s;
+  text-transform: uppercase;
+  width: 100%;
+  max-width: 380px;
+}
+.donate-btn:hover {
+  background: transparent;
+  color: var(--gold);
+}
+.donate-secure {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--gold-dim);
+  margin-top: 1rem;
+  letter-spacing: 0.1em;
+}
+
+/* DIVIDER */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.15), transparent);
+  margin: 0;
+}
+
+/* FOOTER */
+footer {
+  padding: 4rem;
+  text-align: center;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.footer-text {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  line-height: 2.5;
+}
+.footer-sig {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ash);
+  margin-top: 1.5rem;
+}
+
+/* AUDIO PLAYER */
+.audio-player {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(4,3,10,0.88);
+  border: 1px solid var(--gold-dim);
+  padding: 0.7rem 1.2rem;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.4s;
+}
+.audio-play-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--gold-dim);
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.audio-play-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+.audio-label {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 200;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--ash);
+  white-space: nowrap;
+}
+.audio-sublabel {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--gold-dim);
+  font-style: italic;
+}
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 1.5rem 2rem; }
+  .hero { padding: 8rem 2rem 5rem; }
+  .progress-section, .mission-section, .donate-section { padding: 4rem 2rem; }
+  .amount-grid { grid-template-columns: repeat(2, 1fr); }
+  footer { padding: 3rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<audio id="mission-audio" loop>
+  <source src="stay_mission.mp3" type="audio/mpeg">
+</audio>
+
+<div class="audio-player" id="audio-player">
+  <div style="display:flex; flex-direction:column; gap:3px;">
+    <span class="audio-label">Stay — 静かなつながり</span>
+    <span class="audio-sublabel">Extended · Mission Version</span>
+  </div>
+  <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
+</div>
+
+<nav>
+  <a class="nav-logo" href="/">The Art of Music</a>
+  <div class="nav-right">
+    <a class="back-link" href="/">← <span data-i18n="back">戻る</span></a>
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">EN</button>
+  </div>
+</nav>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-eyebrow" data-i18n="hero-eyebrow">東京の子どもたちのために</p>
+  <h1 class="hero-title" data-i18n="hero-title">共に<em>道</em>を<br>つくる</h1>
+  <p class="hero-sub" data-i18n="hero-sub">
+    音楽は、魂が折れる前に届く。<br>
+    これがわたしたちの使命。
+  </p>
+  <div class="hero-line"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROGRESS -->
+<div class="progress-section reveal">
+  <p class="section-label" data-i18n="progress-label">目標</p>
+  <div class="accent-line"></div>
+  <div class="progress-numbers">
+    <span class="progress-raised">CHF 0</span>
+    <span class="progress-goal" data-i18n="progress-goal">目標: CHF 1,000,000</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
+  <p class="progress-label" data-i18n="progress-pct">0% — 2027年1月まで</p>
+  <p class="progress-deadline" data-i18n="progress-deadline">January 2027 · Tokyo</p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- MISSION TEXT -->
+<section class="mission-section">
+  <div class="reveal" style="text-align:center; margin-bottom:4rem;">
+    <p class="section-label" data-i18n="mission-label">使命</p>
+    <div class="accent-line"></div>
+  </div>
+  <div id="mission-content" class="reveal"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- DONATE -->
+<section class="donate-section reveal">
+  <p class="section-label" data-i18n="donate-label">支援する</p>
+  <div class="accent-line"></div>
+  <h2 class="donate-title" data-i18n="donate-title">あなたの支援が<br>道になる</h2>
+  <p class="donate-sub" data-i18n="donate-sub">
+    金額を選んでください。<br>
+    どんな金額でも、東京への道の一部になります。
+  </p>
+
+  <div class="amount-grid">
+    <button class="amount-btn" onclick="selectAmount(10, this)">CHF 10</button>
+    <button class="amount-btn" onclick="selectAmount(25, this)">CHF 25</button>
+    <button class="amount-btn" onclick="selectAmount(50, this)">CHF 50</button>
+    <button class="amount-btn" onclick="selectAmount(100, this)">CHF 100</button>
+    <button class="amount-btn" onclick="selectAmount(250, this)">CHF 250</button>
+    <button class="amount-btn" onclick="selectAmount(500, this)">CHF 500</button>
+    <button class="amount-btn" onclick="selectAmount(1000, this)">CHF 1000</button>
+    <button class="amount-btn" id="custom-btn" onclick="focusCustom(this)" data-i18n="btn-custom">自由</button>
+  </div>
+
+  <input
+    class="custom-amount"
+    id="custom-input"
+    type="number"
+    min="1"
+    placeholder="CHF ..."
+    oninput="onCustomInput()"
+    style="display:none;"
+  >
+
+  <button class="donate-btn" onclick="donate()" data-i18n="donate-btn">支援する · Donate</button>
+  <p class="donate-secure" data-i18n="donate-secure">via Stripe · secure & encrypted</p>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-text" data-i18n="footer-text">
+    音楽と詩の間で — 三つの言語で<br>
+    Between music and poetry — in three languages
+  </p>
+  <p class="footer-sig">— Sealtiel · The Art of Music</p>
+  <p style="font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.3em; color:rgba(201,168,76,0.3); margin-top:2rem;">
+    <a href="mailto:contact@theartof.music" style="color:inherit; text-decoration:none;">contact@theartof.music</a>
+  </p>
+</footer>
+
+<script>
+// ─── LANG ───────────────────────────────────────────
+let lang = 'jp';
+
+const t = {
+  jp: {
+    'back': '戻る',
+    'hero-eyebrow': '東京の子どもたちのために',
+    'hero-title': '共に<em>道</em>を<br>つくる',
+    'hero-sub': '音楽は、魂が折れる前に届く。<br>これがわたしたちの使命。',
+    'progress-label': '目標',
+    'progress-goal': '目標: CHF 1,000,000',
+    'progress-pct': '0% — 2027年1月まで',
+    'progress-deadline': '2027年1月 · 東京',
+    'mission-label': '使命',
+    'donate-label': '支援する',
+    'donate-title': 'あなたの支援が<br>道になる',
+    'donate-sub': '金額を選んでください。<br>どんな金額でも、東京への道の一部になります。',
+    'btn-custom': '自由',
+    'donate-btn': '支援する · Donate',
+    'donate-secure': 'Stripe経由 · 安全・暗号化済み',
+    'footer-text': '音楽と詩の間で — 三つの言語で<br>Between music and poetry — in three languages',
+  },
+  en: {
+    'back': 'Back',
+    'hero-eyebrow': 'For the children of Tokyo',
+    'hero-title': 'Together we<br>build the <em>way</em>',
+    'hero-sub': 'Music reaches the soul before it breaks.<br>That is our mission.',
+    'progress-label': 'Goal',
+    'progress-goal': 'Goal: CHF 1,000,000',
+    'progress-pct': '0% — by January 2027',
+    'progress-deadline': 'January 2027 · Tokyo',
+    'mission-label': 'Mission',
+    'donate-label': 'Support',
+    'donate-title': 'Your support<br>becomes the way',
+    'donate-sub': 'Choose an amount.<br>Every contribution becomes part of the road to Tokyo.',
+    'btn-custom': 'Custom',
+    'donate-btn': 'Donate · 支援する',
+    'donate-secure': 'via Stripe · secure & encrypted',
+    'footer-text': 'Between music and poetry — in three languages<br>音楽と詩の間で — 三つの言語で',
+  }
+};
+
+function applyLang() {
+  const d = t[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+  document.getElementById('lang-btn').textContent = lang === 'jp' ? 'EN' : 'JP';
+  renderMission();
+}
+
+function toggleLang() {
+  lang = lang === 'jp' ? 'en' : 'jp';
+  applyLang();
+}
+
+// ─── MISSION TEXT ────────────────────────────────────
+function renderMission() {
+  const el = document.getElementById('mission-content');
+  el.innerHTML = lang === 'jp' ? missionJP() : missionEN();
+}
+
+function missionJP() {
+  return `
+    <p class="spenden-text">東京には、夜になっても家に帰らない子どもたちがいる。</p>
+    <p class="spenden-text">家がないからではない。<br>家こそが、最も傷つく場所だから。</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">彼らは歌舞伎町で眠る。<br>ネオンの光と、カラオケバーの狭間で。<br>十三歳。十五歳。十七歳。<br>もっと幼い子もいる。</p>
+    <p class="spenden-text" style="font-style:italic; color:var(--ash);">世界は彼らを「トー横キッズ」と呼ぶ。<br>名前があれば十分だとでも言うように。</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">不都合な真実とは、彼らが存在することではない。</p>
+    <p class="spenden-text" style="color:var(--light); font-weight:400;">不都合な真実とは、<br>誰もが知っているということだ。</p>
+    <p class="spenden-text" style="color:var(--gold); letter-spacing:0.05em;">それでも、誰も立ち止まらない。</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">わたしはソーシャルワーカーではない。<br>政治家でもない。<br>プログラムも、組織も、肩書きもない。<br>わたしにあるのは、ただこれだけだ：</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.2rem; letter-spacing:0.08em;">わたしは行く。</p>
+    <p class="spenden-text">この子どもたちが一度も持ったことのない<br>ただひとつのものを持って：</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.2rem; letter-spacing:0.08em;">そばにいつづける、誰か。</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text" style="color:var(--light); font-size:1.1rem; letter-spacing:0.08em;">2027年1月まで、100万スイスフラン。</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic;">組織のためではない。<br>建物のためではない。</p>
+    <p class="spenden-text">到着のために。<br>存在のために。</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">ただ、そこにいること。</p>
+  `;
+}
+
+function missionEN() {
+  return `
+    <p class="spenden-text">In Tokyo, there are children who do not go home at night.</p>
+    <p class="spenden-text">Not because they have no home.<br>But because home is the place<br>where it hurts the most.</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">They sleep in Kabukichō.<br>Between neon lights and karaoke bars.<br>Thirteen. Fifteen. Seventeen.<br>Some younger.</p>
+    <p class="spenden-text" style="font-style:italic; color:var(--ash);">The world calls them Toyoko Kids.<br>As if a name is enough.</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">The uncomfortable truth is not that they exist.</p>
+    <p class="spenden-text" style="color:var(--light); font-weight:400;">The uncomfortable truth is<br>that everyone knows.</p>
+    <p class="spenden-text" style="color:var(--gold); letter-spacing:0.05em;">And no one stops.</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text">I am not a social worker.<br>I am not a politician.<br>I have no program, no organization, no title.<br>I have only this:</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.2rem; letter-spacing:0.08em;">I am going.</p>
+    <p class="spenden-text">With the only thing<br>these children have never had:</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.2rem; letter-spacing:0.08em;">Someone who stays.</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text" style="color:var(--light); font-size:1.1rem; letter-spacing:0.08em;">1,000,000 CHF by January 2027.</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic;">Not for an organization.<br>Not for a building.</p>
+    <p class="spenden-text">For an arrival.<br>For presence.</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">Being there.</p>
+  `;
+}
+
+// ─── DONATE ──────────────────────────────────────────
+let selectedAmount = null;
+
+function selectAmount(amt, btn) {
+  selectedAmount = amt;
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('custom-input').style.display = 'none';
+  document.getElementById('custom-input').value = '';
+}
+
+function focusCustom(btn) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const input = document.getElementById('custom-input');
+  input.style.display = 'block';
+  input.focus();
+  selectedAmount = null;
+}
+
+function onCustomInput() {
+  selectedAmount = parseFloat(document.getElementById('custom-input').value) || null;
+}
+
+function donate() {
+  window.open('https://buy.stripe.com/cNibJ07kP092ftJbNGcwg00', '_blank');
+}
+
+// ─── PARTICLES ───────────────────────────────────────
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = p.style.height = (Math.random() > 0.7 ? '2px' : '1px');
+    container.appendChild(p);
+  }
+}
+
+// ─── REVEAL ──────────────────────────────────────────
+function initReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ─── PROGRESS BAR ─────────────────────────────────────
+function animateProgress() {
+  // Update this value as donations come in
+  const raised = 0;
+  const goal = 1000000;
+  const pct = Math.min((raised / goal) * 100, 100);
+  setTimeout(() => {
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }, 500);
+}
+
+// ─── AUDIO ───────────────────────────────────────────
+function toggleAudio() {
+  const audio = document.getElementById('mission-audio');
+  const btn = document.getElementById('play-btn');
+  if (audio.paused) {
+    audio.volume = 0.25;
+    audio.play();
+    btn.textContent = '⏸';
+  } else {
+    audio.pause();
+    btn.textContent = '▶';
+  }
+}
+
+// Auto-start on first scroll interaction
+let audioStarted = false;
+document.addEventListener('scroll', () => {
+  if (!audioStarted && window.scrollY > 200) {
+    audioStarted = true;
+    const audio = document.getElementById('mission-audio');
+    audio.volume = 0.2;
+    audio.play().then(() => {
+      document.getElementById('play-btn').textContent = '⏸';
+    }).catch(() => {});
+  }
+}, { passive: true });
+
+// ─── INIT ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  createParticles();
+  initReveal();
+  animateProgress();
+  renderMission();
+});
+</script>
+</body>
+</html>
