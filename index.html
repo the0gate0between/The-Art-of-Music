@@ -1304,27 +1304,22 @@ footer { padding: 4rem; text-align: center; }
   <div class="mitmachen-page">
     <p class="section-label">参加する · Join the Mission</p>
     <div class="accent-line"></div>
-    <h1 class="mitmachen-title">共に<br>声を上げる</h1>
+    <h1 class="mitmachen-title" data-i18n="mitmachen-title">共に<br>声を上げる</h1>
 
-    <p class="mitmachen-subtitle">
-      音楽はひとりでは届かない場所がある。<br>
-      歌い手。バンド。カバー歌手。ファン。言葉は問わない。<br>
-      2120曲以上のカタログの中に、あなたを待っている何かがある。<br>
-      大切なのは、魂が本物であること。
-    </p>
+    <p class="mitmachen-subtitle" data-i18n="mitmachen-subtitle">音楽はひとりでは届かない場所がある。<br>歌い手。バンド。カバー歌手。ファン。言葉は問わない。<br>2120曲以上のカタログの中に、あなたを待っている何かがある。<br>大切なのは、魂が本物であること。</p>
 
     <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; margin-bottom:4rem;">
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">歌い手 · Artists</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">Vocalists and bands who want to bring our songs to life — in any language, any style.</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card1">あなたの声で、わたしたちの歌を生かしてほしい。言語も、ジャンルも、スタイルも問わない。</p>
       </div>
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">カバー · Cover Singers</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">2120 songs waiting for a voice. Find the one that was written for you.</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card2">2120曲があなたの声を待っている。あなたのために書かれた一曲を、見つけてほしい。</p>
       </div>
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">ファン · Community</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">You don't need to sing. Share, connect, be part of something that moves the world.</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card3">歌わなくていい。シェアして、繋がって、世界を動かす何かの一部になってほしい。</p>
       </div>
     </div>
 
@@ -1632,7 +1627,10 @@ const t = {
     // Mitmachen page
     'mitmachen-label': 'Join',
     'mitmachen-title': 'Make music<br>together',
-    'mitmachen-subtitle': 'Vocalists, bands, cover singers, fans.<br>All languages welcome. 2120 songs — one is waiting for your voice.',
+    'mitmachen-subtitle': 'There are places music cannot reach alone.<br>Vocalists. Bands. Cover singers. Fans. All languages welcome.<br>In a catalog of 2120 songs, something is waiting for you.<br>What matters is that the soul is real.',
+    'mitmachen-card1': 'Vocalists and bands who want to bring our songs to life — in any language, any style.',
+    'mitmachen-card2': '2120 songs waiting for a voice. Find the one that was written for you.',
+    'mitmachen-card3': "You don't need to sing. Share, connect, be part of something that moves the world.",
     'form-label-name': 'Name',
     'form-label-artist': 'Artist Name',
     'form-label-email': 'E-Mail',
