@@ -378,36 +378,25 @@ footer {
   bottom: 2rem;
   right: 2rem;
   z-index: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  background: rgba(4,3,10,0.88);
+  flex-direction: column;
+  width: 300px;
   border: 1px solid var(--gold-dim);
-  padding: 0.7rem 1.2rem;
+  background: rgba(4,3,10,0.92);
   backdrop-filter: blur(8px);
-  transition: opacity 0.4s;
+  display: none;
 }
-.audio-play-btn {
-  width: 32px; height: 32px;
-  border: 1px solid var(--gold-dim);
-  background: transparent;
-  color: var(--gold);
-  cursor: pointer;
+.audio-player-header {
+  padding: 0.6rem 1rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  transition: all 0.3s;
-  flex-shrink: 0;
 }
-.audio-play-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
 .audio-label {
   font-family: 'Noto Serif JP', serif;
   font-weight: 200;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
   color: var(--ash);
-  white-space: nowrap;
 }
 .audio-sublabel {
   font-family: 'Cormorant Garamond', serif;
@@ -432,17 +421,22 @@ footer {
 </head>
 <body>
 
-<audio id="mission-audio" loop>
-  <source src="stay_mission.mp3" type="audio/mpeg">
-</audio>
+<audio id="mission-audio" style="display:none"></audio>
 
 <div class="audio-player" id="audio-player">
-  <div style="display:flex; flex-direction:column; gap:3px;">
-    <span class="audio-label">Stay — 静かなつながり</span>
-    <span class="audio-sublabel">Extended · Mission Version</span>
+  <div class="audio-player-header">
+    <div>
+      <span class="audio-label">Stay — 静かなつながり</span><br>
+      <span class="audio-sublabel">Extended · Mission Version</span>
+    </div>
+    <button onclick="document.getElementById('audio-player').style.display='none'" style="background:transparent; border:none; color:var(--ash); cursor:pointer; font-size:1rem; line-height:1;">✕</button>
   </div>
-  <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
+  <iframe width="100%" height="80" scrolling="no" frameborder="no" allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/sealtiel_art/stay_extend&color=%23c9a84c&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false">
+  </iframe>
 </div>
+
+<button id="music-trigger" onclick="document.getElementById('audio-player').style.display='flex'; document.getElementById('music-trigger').style.display='none'" style="position:fixed; bottom:2rem; right:2rem; z-index:499; background:rgba(4,3,10,0.88); border:1px solid var(--gold-dim); color:var(--gold); padding:0.7rem 1.2rem; font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.2em; cursor:pointer; backdrop-filter:blur(8px); display:flex; align-items:center; gap:0.6rem;">▶ <span style="font-family:'Noto Serif JP',serif; font-weight:200; font-size:0.65rem; letter-spacing:0.15em; color:var(--ash);">Stay</span></button>
 
 <nav>
   <a class="nav-logo" href="/">The Art of Music</a>
@@ -718,33 +712,6 @@ function animateProgress() {
     document.getElementById('progress-fill').style.width = pct + '%';
   }, 500);
 }
-
-// ─── AUDIO ───────────────────────────────────────────
-function toggleAudio() {
-  const audio = document.getElementById('mission-audio');
-  const btn = document.getElementById('play-btn');
-  if (audio.paused) {
-    audio.volume = 0.25;
-    audio.play();
-    btn.textContent = '⏸';
-  } else {
-    audio.pause();
-    btn.textContent = '▶';
-  }
-}
-
-// Auto-start on first scroll interaction
-let audioStarted = false;
-document.addEventListener('scroll', () => {
-  if (!audioStarted && window.scrollY > 200) {
-    audioStarted = true;
-    const audio = document.getElementById('mission-audio');
-    audio.volume = 0.2;
-    audio.play().then(() => {
-      document.getElementById('play-btn').textContent = '⏸';
-    }).catch(() => {});
-  }
-}, { passive: true });
 
 // ─── INIT ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
