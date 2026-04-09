@@ -913,21 +913,14 @@ footer { padding: 4rem; text-align: center; }
 </head>
 <body>
 
-<!-- SoundCloud Player -->
-<div id="audio-player" style="display:none; position:fixed; bottom:2rem; right:2rem; z-index:500; flex-direction:column; width:300px; border:1px solid var(--gold-dim); background:rgba(4,3,10,0.92); backdrop-filter:blur(8px);">
-  <div style="padding:0.6rem 1rem; display:flex; justify-content:space-between; align-items:center;">
-    <div>
-      <span style="font-family:'Noto Serif JP',serif; font-weight:200; font-size:0.65rem; letter-spacing:0.15em; color:var(--ash);">まだ屈折していない光</span><br>
-      <span style="font-family:'Cormorant Garamond',serif; font-size:0.55rem; letter-spacing:0.1em; color:var(--gold-dim); font-style:italic;">Light Not Yet Refracted</span>
-    </div>
-    <button onclick="document.getElementById('audio-player').style.display='none'" style="background:transparent; border:none; color:var(--ash); cursor:pointer; font-size:1rem; line-height:1;">✕</button>
+<div class="audio-player" id="audio-player">
+  <img src="cover.jpg" style="width:44px; height:44px; object-fit:cover; flex-shrink:0;">
+  <div style="display:flex; flex-direction:column; gap:3px;">
+    <span class="audio-label">まだ屈折していない光</span>
+    <span style="font-family:Cormorant Garamond,serif; font-size:0.55rem; letter-spacing:0.1em; color:var(--gold-dim);">Light Not Yet Refracted</span>
   </div>
-  <iframe width="100%" height="80" scrolling="no" frameborder="no" allow="autoplay"
-    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/sealtiel_art/light-not-yet-refracted&color=%23c9a84c&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false">
-  </iframe>
+  <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
 </div>
-
-<button id="music-trigger" onclick="document.getElementById('audio-player').style.display='flex'" style="position:fixed; bottom:2rem; right:2rem; z-index:499; background:rgba(4,3,10,0.88); border:1px solid var(--gold-dim); color:var(--gold); padding:0.7rem 1.2rem; font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.2em; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(8px); display:flex; align-items:center; gap:0.6rem;">▶ <span style="font-family:'Noto Serif JP',serif; font-weight:200; font-size:0.65rem; letter-spacing:0.15em; color:var(--ash);">まだ屈折していない光</span></button>
 
 <div class="donate-modal" id="donate-modal">
   <div class="donate-modal-inner">
@@ -937,7 +930,9 @@ footer { padding: 4rem; text-align: center; }
   </div>
 </div>
 
-<!-- audio replaced by SoundCloud embed -->
+<audio id="bg-audio" loop style="display:none;">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <nav>
   <div class="nav-logo" onclick="showPage('home')">The Art of Music</div>
@@ -947,7 +942,7 @@ footer { padding: 4rem; text-align: center; }
     <li><a href="#about" onclick="showPage('home')" id="nav-about" data-i18n="nav-about">について</a></li>
     <li><a onclick="showPage('wahrheit')" id="nav-wahrheit" data-i18n="nav-wahrheit">真実</a></li>
     <li><a onclick="showPage('mitmachen')" id="nav-mitmachen" data-i18n="nav-mitmachen">参加する</a></li>
-    <li><a href="fundraising.html" target="_blank" id="nav-spenden" data-i18n="nav-spenden" style="color: var(--void); background: var(--gold); padding: 0.5rem 1.2rem; letter-spacing: 0.15em; transition: all 0.3s;">支援する</a></li>
+    <li><a onclick="showPage('spenden')" id="nav-spenden" data-i18n="nav-spenden" style="color: var(--void); background: var(--gold); padding: 0.5rem 1.2rem; letter-spacing: 0.15em; transition: all 0.3s;">支援する</a></li>
   </ul>
   <button id="lang-toggle" onclick="toggleLang()" style="
     background: transparent;
@@ -1019,7 +1014,7 @@ footer { padding: 4rem; text-align: center; }
           <div class="artist-name">Sealtiel</div>
           <div class="artist-name-jp" data-i18n="artist-jp">シールティエル · 真封 真 · 願生</div>
         </div>
-        <p class="artist-bio" data-i18n="artist-bio">祈りから生まれた。日本語、ドイツ語、英語の三つの言語で、世界の狭間から歌う。2100+曲以上。ひとつの声。音楽という肉体。</p>
+        <p class="artist-bio" data-i18n="artist-bio">祈りから生まれた。日本語、ドイツ語、英語の三つの言語で、世界の狭間から歌う。2120曲以上。ひとつの声。音楽という肉体。</p>
       </div>
 
       <div id="music" class="songs-grid reveal">
@@ -1078,7 +1073,7 @@ footer { padding: 4rem; text-align: center; }
 
       <div class="catalog-header reveal">
         <div class="catalog-headline-wrap">
-          <h2 class="catalog-headline" data-i18n="catalog-headline">2100+の歌。<br>三つの言語。<br><span class="catalog-headline-sub">ひとつの宇宙。</span></h2>
+          <h2 class="catalog-headline" data-i18n="catalog-headline">2120の歌。<br>三つの言語。<br><span class="catalog-headline-sub">ひとつの宇宙。</span></h2>
         </div>
         <div class="catalog-intro">
           <p class="catalog-intro-main" data-i18n="catalog-intro-main">Sealtiel は一枚のアルバムを作ったアーティストではない。<br>何年もかけて生まれたカタログ——<br>カバー歌手、プロデューサー、レーベルに向けた<br>日本語・ドイツ語・英語の楽曲たち。<br>完成している。届ける準備ができている。</p>
@@ -1088,7 +1083,7 @@ footer { padding: 4rem; text-align: center; }
 
       <div class="catalog-stats reveal">
         <div class="catalog-stat">
-          <span class="cstat-num">2100+</span>
+          <span class="cstat-num">2120</span>
           <span class="cstat-label" data-i18n="cstat-songs">楽曲数</span>
         </div>
         <div class="cstat-div"></div>
@@ -1146,7 +1141,7 @@ footer { padding: 4rem; text-align: center; }
 
       <div class="catalog-cta reveal">
         <button class="catalog-btn" onclick="showPage('mitmachen')" data-i18n="catalog-btn">参加する</button>
-        <span class="catalog-cta-hint" data-i18n="catalog-cta-hint">または直接： <a href="/cdn-cgi/l/email-protection#ddb1a4afb4beae9daeb8bcb1a9b4b8b1f3bcafa9" class="catalog-mail"><span class="__cf_email__" data-cfemail="c6aabfb4afa5b586b5a3a7aab2afa3aae8a7b4b2">[email&#160;protected]</span></a></span>
+        <span class="catalog-cta-hint" data-i18n="catalog-cta-hint">または直接： <a href="/cdn-cgi/l/email-protection#e18d9893888292a19284808d9588848dcf809395" class="catalog-mail"><span class="__cf_email__" data-cfemail="d2beaba0bbb1a192a1b7b3bea6bbb7befcb3a0a6">[email&#160;protected]</span></a></span>
       </div>
 
     </div>
@@ -1225,7 +1220,7 @@ footer { padding: 4rem; text-align: center; }
     </p>
     <div class="footer-spenden">
       <p class="footer-spenden-text" data-i18n="footer-spenden-text">東京の路上に生きる子どもたちのために。</p>
-      <a class="footer-spenden-btn" href="fundraising.html" target="_blank" data-i18n="footer-spenden-btn">支援する</a>
+      <a class="footer-spenden-btn" onclick="showPage('spenden')" data-i18n="footer-spenden-btn">支援する</a>
       <a class="footer-spenden-btn" style="margin-left:1rem;" onclick="showPage('wahrheit')" data-i18n="footer-wahrheit-btn">真実</a>
     </div>
     <ul class="footer-links">
@@ -1234,7 +1229,7 @@ footer { padding: 4rem; text-align: center; }
       <li><a href="https://x.com/Sealtiel_Art" target="_blank">X</a></li>
       <li><a href="https://note.com/sealtiel_art" target="_blank">note</a></li>
       <li><a href="https://ko-fi.com/sealtiel_art" target="_blank">Ko-fi</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#4d21343f242e3e0d3e282c2139242821632c3f39">お問い合わせ</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#6b0712190208182b180e0a071f020e07450a191f">お問い合わせ</a></li>
     </ul>
     <p class="footer-copy">© 2026 The Art of Music · theartof.music</p>
   </footer>
@@ -1246,40 +1241,83 @@ footer { padding: 4rem; text-align: center; }
     <p class="section-label">支援する</p>
     <div class="accent-line"></div>
 
-    <p class="spenden-text">路上に生きる子がいる。</p>
-    <p class="spenden-text">誰にも属さず、<br>どこにも縛られず、<br>ただ、そこにいる。</p>
-    <p class="spenden-text">わたしは彼らを変えたいのではない。<br>ただ、そばにいたい。<br>魂が折れる前に。</p>
-    <p class="spenden-text">2027年1月、東京へ向かう。<br>一緒に来ませんか？</p>
+    <p class="spenden-text" style="font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">目標 · GOAL</p>
+    <p class="spenden-text" style="font-size:1.3rem; color:var(--gold); letter-spacing:0.1em;">CHF 1,000,000</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic; margin-bottom:2rem;">2027年1月まで · by January 2027</p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text">東京には、夜になっても家に帰らない子どもたちがいる。</p>
+    <p class="spenden-text">家がないからではない。<br>家こそが、最も傷つく場所だから。</p>
+    <p class="spenden-text">彼らは歌舞伎町で夜を過ごす。<br>ネオンの光の下で。<br>十三歳。十五歳。十七歳。<br>もっと幼い子もいる。</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic;">世界は彼らを「トー横キッズ」と呼ぶ。<br>名前の代わりに。</p>
+    <p class="spenden-text">不都合な真実は、誰もがそれを知っていること。<br>それでも、立ち止まる人は少ない。</p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text">わたしは専門家ではありません。<br>しかし、準備をしています。</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic;">現地の知識を持つ人々と連携し、<br>安全な形で、一歩ずつ進みます。</p>
+    <p class="spenden-text" style="color:var(--gold-dim);">👉 活動の進捗や資金の使い道は、定期的に共有します。<br>👉 透明性を大切にしながら進めていきます。</p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text">わたしは行きます。</p>
+    <p class="spenden-text">この子どもたちが、まだ知らないものを届けるために。<br>それは、大きな何かではなく——</p>
+    <p class="spenden-text" style="color:var(--gold); font-size:1.1rem; letter-spacing:0.08em;">ただ、そこにいること。</p>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic;">この活動は、組織や建物のためではありません。<br>「存在」のためです。</p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text">あなたの支援が、この道の一部になります。<br>どんな金額でも構いません。<br>それは、東京へと続く一歩になります。</p>
     <p class="spenden-sig">— Sealtiel</p>
 
     <div class="spenden-divider"></div>
 
     <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--ash);">
-      There are children who belong to no one.<br><br>
-      Not lost —<br>
-      freer than most of us will ever be.<br><br>
-      I am not going to save them.<br>
-      I am going to be there.<br>
-      Before the world teaches them<br>
-      that their freedom was a mistake.<br><br>
-      January 2027. Tokyo.<br>
-      What arrives here, goes with me.
+      In Tokyo, there are children who don't go home at night.<br><br>
+      Not because they don't have a home.<br>
+      But because home is where the pain begins.<br><br>
+      They sleep in Kabukichō. Between neon lights and the noise of the night.<br>
+      Thirteen. Fifteen. Seventeen. Some even younger.<br><br>
+      The world calls them "Toyoko Kids."<br>
+      As if a label could replace a name.<br><br>
+      The uncomfortable truth is not that they exist.<br>
+      It's that everyone knows. And still, almost no one stops.
     </p>
-    <p class="spenden-sig">— Sealtiel</p>
 
     <div class="spenden-divider"></div>
 
-    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--ash);">
-      Es gibt Kinder, die niemandem gehören.<br><br>
-      Nicht verloren —<br>
-      freier als die meisten von uns<br>
-      je sein werden.<br><br>
-      Ich gehe nicht um sie zu retten.<br>
-      Ich gehe um da zu sein.<br>
-      Bevor die Welt ihnen beibringt,<br>
-      dass ihre Freiheit ein Fehler war.<br><br>
-      Januar 2027. Tokyo.<br>
-      Was hier ankommt, kommt mit.
+    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--light);">
+      I am not a social worker. Not a politician.<br>
+      But I am preparing.<br><br>
+      I am connecting with people who understand the local reality,<br>
+      and I will move step by step in a safe and grounded way.
+    </p>
+    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--gold-dim); font-style:italic;">
+      👉 I will share updates regularly — how this project develops and how support is used.<br>
+      👉 Transparency is part of this path.
+    </p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--light);">
+      I will go.<br><br>
+      To bring something many of these children never had:<br>
+      Someone who stays.<br><br>
+      Not as a system. Not as a solution.<br>
+      But as presence.
+    </p>
+    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--ash); font-style:italic;">
+      This project is not for buildings. Not for structures.<br>
+      It is for being there.
+    </p>
+
+    <div class="spenden-divider"></div>
+
+    <p class="spenden-text" style="font-family:'Cormorant Garamond',serif; color:var(--light);">
+      Your support becomes part of this path.<br>
+      Any amount matters.<br>
+      Every contribution is a step towards Tokyo.
     </p>
     <p class="spenden-sig">— Sealtiel</p>
 
@@ -1298,7 +1336,7 @@ footer { padding: 4rem; text-align: center; }
     <ul class="footer-links">
       <li><a href="https://youtube.com/@sealtiel_art_" target="_blank">YouTube</a></li>
       <li><a href="https://instagram.com/sealtiel_art" target="_blank">Instagram</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#3c50454e555f4f7c4f595d5048555950125d4e48">お問い合わせ</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#a0ccd9d2c9c3d3e0d3c5c1ccd4c9c5cc8ec1d2d4">お問い合わせ</a></li>
     </ul>
     <p class="footer-copy">© 2026 The Art of Music · theartof.music</p>
   </footer>
@@ -1309,22 +1347,27 @@ footer { padding: 4rem; text-align: center; }
   <div class="mitmachen-page">
     <p class="section-label">参加する · Join the Mission</p>
     <div class="accent-line"></div>
-    <h1 class="mitmachen-title" data-i18n="mitmachen-title">共に<br>声を上げる</h1>
+    <h1 class="mitmachen-title">共に<br>声を上げる</h1>
 
-    <p class="mitmachen-subtitle" data-i18n="mitmachen-subtitle">音楽はひとりでは届かない場所がある。<br>歌い手。バンド。カバー歌手。ファン。言葉は問わない。<br>2100+曲以上のカタログの中に、あなたを待っている何かがある。<br>大切なのは、魂が本物であること。</p>
+    <p class="mitmachen-subtitle">
+      音楽はひとりでは届かない場所がある。<br>
+      歌い手。バンド。カバー歌手。ファン。言葉は問わない。<br>
+      2120曲以上のカタログの中に、あなたを待っている何かがある。<br>
+      大切なのは、魂が本物であること。
+    </p>
 
     <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; margin-bottom:4rem;">
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">歌い手 · Artists</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card1">あなたの声で、わたしたちの歌を生かしてほしい。言語も、ジャンルも、スタイルも問わない。</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">Vocalists and bands who want to bring our songs to life — in any language, any style.</p>
       </div>
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">カバー · Cover Singers</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card2">2100+曲があなたの声を待っている。あなたのために書かれた一曲を、見つけてほしい。</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">2120 songs waiting for a voice. Find the one that was written for you.</p>
       </div>
       <div style="border-top:1px solid var(--gold-dim); padding-top:1.5rem;">
         <p style="font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem;">ファン · Community</p>
-        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);" data-i18n="mitmachen-card3">歌わなくていい。シェアして、繋がって、世界を動かす何かの一部になってほしい。</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.9; color:var(--ash);">You don't need to sing. Share, connect, be part of something that moves the world.</p>
       </div>
     </div>
 
@@ -1374,7 +1417,7 @@ footer { padding: 4rem; text-align: center; }
     <ul class="footer-links">
       <li><a href="https://youtube.com/@sealtiel_art_" target="_blank">YouTube</a></li>
       <li><a href="https://instagram.com/sealtiel_art" target="_blank">Instagram</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#4f23363d262c3c0f3c2a2e233b262a23612e3d3b">お問い合わせ</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#731f0a011a1000330016121f071a161f5d120107">お問い合わせ</a></li>
     </ul>
     <p class="footer-copy">© 2026 The Art of Music · theartof.music</p>
   </footer>
@@ -1408,7 +1451,7 @@ footer { padding: 4rem; text-align: center; }
     <ul class="footer-links">
       <li><a href="https://youtube.com/@sealtiel_art_" target="_blank">YouTube</a></li>
       <li><a href="https://instagram.com/sealtiel_art" target="_blank">Instagram</a></li>
-      <li><a href="/cdn-cgi/l/email-protection#1d71646f747e6e5d6e787c7169747871337c6f69">お問い合わせ</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#bcd0c5ced5dfcffccfd9ddd0c8d5d9d092ddcec8">お問い合わせ</a></li>
     </ul>
     <p class="footer-copy">© 2026 The Art of Music · theartof.music</p>
   </footer>
@@ -1426,7 +1469,16 @@ function showPage(name) {
   const hashMap = { home: '', spenden: 'support', wahrheit: 'truth', mitmachen: 'join' };
   history.pushState(null, '', hashMap[name] ? '#' + hashMap[name] : window.location.pathname.replace(/#.*/, ''));
 
-  // SoundCloud player stays visible always
+  const audio = document.getElementById('bg-audio');
+  const player = document.getElementById('audio-player');
+  if (name === 'spenden' || name === 'wahrheit') {
+    player.classList.add('visible');
+  } else {
+    player.classList.remove('visible');
+    audio.pause();
+    audio.currentTime = 0;
+    document.getElementById('play-btn').textContent = '▶';
+  }
 }
 
 function handleNewsletter(e) {
@@ -1498,7 +1550,7 @@ const t = {
     'about-quote': '音楽は魂が折れる前に届く。<br>それがわたしたちの使命。<br><br>言葉ではなく、<br>音で世界を動かす。',
     // Artist
     'label-artist': 'アーティスト',
-    'artist-bio': '祈りから生まれた。日本語、ドイツ語、英語の三つの言語で、世界の狭間から歌う。2100+曲以上。ひとつの声。音楽という肉体。',
+    'artist-bio': '祈りから生まれた。日本語、ドイツ語、英語の三つの言語で、世界の狭間から歌う。2120曲以上。ひとつの声。音楽という肉体。',
     'artist-jp': 'シールティエル · 真封 真 · 願生',
     // Songs
     'song1-num': '01 — 新曲',
@@ -1535,7 +1587,7 @@ const t = {
     // Mitmachen page
     'mitmachen-label': '参加する',
     'mitmachen-title': '一緒に<br>音楽を',
-    'mitmachen-subtitle': '歌い手も、バンドも、カバー歌手も、ファンも。<br>言語は問わない。2100+曲以上の中に、あなたを待っている何かがある。',
+    'mitmachen-subtitle': '歌い手も、バンドも、カバー歌手も、ファンも。<br>言語は問わない。2120曲以上の中に、あなたを待っている何かがある。',
     'form-label-name': '名前',
     'form-label-artist': 'アーティスト名',
     'form-label-email': 'メール',
@@ -1547,7 +1599,7 @@ const t = {
     'wahrheit-label': '真実',
     'wahrheit-title': '不都合な真実',
     'label-catalog': 'カタログ',
-    'catalog-headline': '2100+の歌。<br>三つの言語。<br><span class="catalog-headline-sub">ひとつの宇宙。</span>',
+    'catalog-headline': '2120の歌。<br>三つの言語。<br><span class="catalog-headline-sub">ひとつの宇宙。</span>',
     'catalog-intro-main': 'Sealtiel は一枚のアルバムを作ったアーティストではない。<br>何年もかけて生まれたカタログ——<br>カバー歌手、プロデューサー、レーベルに向けた<br>日本語・ドイツ語・英語の楽曲たち。<br>完成している。届ける準備ができている。',
     'catalog-intro-sub': '新しいが、どこか懐かしい。<br>City Pop、R&B、J-Popの空気を持ちながら、<br>言葉の先にある何かを歌う。',
     'cstat-songs': '楽曲数',
@@ -1562,7 +1614,7 @@ const t = {
     'ccard3-text': '日本、ドイツ語圏、英語圏を同時に届けられるカタログ。シンク対応。ライセンス可能。スケーラブル。',
     'ccard4-label': '聴く方へ',
     'ccard4-text': '言語と文化の狭間から生まれた音楽。説明できないけれど、感じる何か。一曲一曲が、完成した世界。',
-    'catalog-invite': 'カバー歌手、バンド、ボーカリストを探しています。<br>2100+の歌が、あなたの声を待っている。<br>ジャンルも言語も問いません——<br>魂が本物であれば、それで十分。',
+    'catalog-invite': 'カバー歌手、バンド、ボーカリストを探しています。<br>2120の歌が、あなたの声を待っている。<br>ジャンルも言語も問いません——<br>魂が本物であれば、それで十分。',
     'catalog-btn': '参加する',
     'catalog-cta-hint': 'または直接： <a href="mailto:lyrics@sealtiel.art" class="catalog-mail">lyrics@sealtiel.art</a>',
   },
@@ -1586,7 +1638,7 @@ const t = {
     'about-quote': 'Music reaches the soul before it breaks.<br>That is our mission.<br><br>Not with words —<br>but with sound, we move the world.',
     // Artist
     'label-artist': 'Featured Artist',
-    'artist-bio': 'Born from a prayer. Singing in three languages — Japanese, German, English — from the space between worlds. 2100+ songs. One voice. The art of music made flesh.',
+    'artist-bio': 'Born from a prayer. Singing in three languages — Japanese, German, English — from the space between worlds. 2120 songs. One voice. The art of music made flesh.',
     'artist-jp': 'Sealtiel · 真封 真 · 願生',
     // Songs
     'song1-num': '01 — New Release',
@@ -1623,10 +1675,7 @@ const t = {
     // Mitmachen page
     'mitmachen-label': 'Join',
     'mitmachen-title': 'Make music<br>together',
-    'mitmachen-subtitle': 'There are places music cannot reach alone.<br>Vocalists. Bands. Cover singers. Fans. All languages welcome.<br>In a catalog of 2100+ songs, something is waiting for you.<br>What matters is that the soul is real.',
-    'mitmachen-card1': 'Vocalists and bands who want to bring our songs to life — in any language, any style.',
-    'mitmachen-card2': '2100+ songs waiting for a voice. Find the one that was written for you.',
-    'mitmachen-card3': "You don't need to sing. Share, connect, be part of something that moves the world.",
+    'mitmachen-subtitle': 'Vocalists, bands, cover singers, fans.<br>All languages welcome. 2120 songs — one is waiting for your voice.',
     'form-label-name': 'Name',
     'form-label-artist': 'Artist Name',
     'form-label-email': 'E-Mail',
@@ -1638,7 +1687,7 @@ const t = {
     'wahrheit-label': 'Truth',
     'wahrheit-title': 'The Uncomfortable Truth',
     'label-catalog': 'Catalog',
-    'catalog-headline': '2100+ songs.<br>Three languages.<br><span class="catalog-headline-sub">One universe.</span>',
+    'catalog-headline': '2120 songs.<br>Three languages.<br><span class="catalog-headline-sub">One universe.</span>',
     'catalog-intro-main': 'Sealtiel is not an artist who made one album.<br>A catalog built over years——<br>songs in Japanese, German, and English<br>for cover singers, producers, and labels.<br>Complete. Ready to be heard.',
     'catalog-intro-sub': 'New, yet somehow familiar.<br>City Pop, R&B, J-Pop — and something<br>beyond words.',
     'cstat-songs': 'Songs',
@@ -1653,7 +1702,7 @@ const t = {
     'ccard3-text': 'A catalog that reaches Japan, the German-speaking world, and English markets simultaneously. Sync-ready. Licensable. Scalable.',
     'ccard4-label': 'For Listeners',
     'ccard4-text': 'Music born between languages and cultures. Something you cannot explain — but feel. Each song is a complete world.',
-    'catalog-invite': 'Looking for cover singers, bands, and vocalists.<br>Over 2100+ songs are waiting for your voice.<br>Genre and language do not matter——<br>if the soul is real, that is enough.',
+    'catalog-invite': 'Looking for cover singers, bands, and vocalists.<br>Over 2120 songs are waiting for your voice.<br>Genre and language do not matter——<br>if the soul is real, that is enough.',
     'catalog-btn': 'Join',
     'catalog-cta-hint': 'or directly: <a href="mailto:lyrics@sealtiel.art" class="catalog-mail">lyrics@sealtiel.art</a>',
   }
@@ -1680,8 +1729,6 @@ function toggleAudio() {
     btn.textContent = '▶';
   }
 }
-
-// Audio player hidden until songs are released
 
 function toggleLang() {
   currentLang = currentLang === 'jp' ? 'en' : 'jp';
@@ -1779,13 +1826,8 @@ function getWahrheitEN() {
     <p class="spenden-text" style="color:var(--light); font-size:1.1rem; letter-spacing:0.08em;">1,000,000 CHF by January 2027.</p>
     <p class="spenden-text" style="color:var(--ash); font-style:italic;">Not for an organization.<br>Not for a building.<br>Not for a project with a logo and annual report.</p>
     <p class="spenden-text">For an arrival.<br>For presence.<br>For what no system can provide:</p>
-    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">Being there.<
-    <div class="spenden-divider"></div>
-    <p class="spenden-text">That is the uncomfortable truth.<br>Not that children sleep on the streets of Tokyo.</p>
-    <p class="spenden-text" style="color:var(--light); font-size:1.1rem;">But that you have just read this —<br>and now you decide<br>whether to keep scrolling.</p>`;
+    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">Being there.</p>`;
 }
-
-
 
 // Initialize wahrheit page
 updateWahrheitPage();
