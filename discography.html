@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discography — Sealtiel / The Art of Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #04030a;
+    --ink: #0a0818;
+    --gold: #c9a84c;
+    --gold-dim: #7a6030;
+    --gold-border: rgba(201,168,76,0.2);
+    --ash: #8a8899;
+    --light: #e8e4f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--light);
+    font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(4,3,10,0.97), transparent);
+  }
+
+  .nav-back {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--ash);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-back::before { content: '←'; color: var(--gold); }
+  .nav-back:hover { color: var(--gold); }
+
+  .nav-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* Page */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 120px 4rem 100px;
+  }
+
+  /* Header */
+  .page-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.2s;
+  }
+
+  .accent-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold-dim);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.3s;
+  }
+
+  .page-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.4s;
+  }
+
+  .page-subtitle {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--ash);
+    margin-bottom: 5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.6s;
+  }
+
+  /* Grid */
+  .songs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.8s;
+  }
+
+  .song-card {
+    border: 1px solid var(--gold-border);
+    transition: border-color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .song-card:hover { border-color: rgba(201,168,76,0.5); }
+
+  .song-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: var(--ink);
+  }
+
+  .song-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .song-content { padding: 1.5rem; }
+
+  .song-number {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .song-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+
+  .song-title-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--ash);
+  }
+
+  /* CTA */
+  .cta-section {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid var(--gold-border);
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+
+  .cta-text {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--ash);
+    line-height: 2.5;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--void);
+    background: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 0.9rem 2.5rem;
+    transition: all 0.3s;
+  }
+
+  .cta-btn:hover { background: var(--light); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--gold-border);
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 60px auto 0;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .footer-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--ash);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .songs-grid { grid-template-columns: repeat(2, 1fr); }
+    .page { padding: 100px 2rem 80px; }
+    nav { padding: 1.5rem 2rem; }
+    footer { padding: 2rem; }
+  }
+
+  @media (max-width: 580px) {
+    .songs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">The Art of Music</a>
+  <a href="index.html" class="nav-brand">theartof.music</a>
+</nav>
+
+<div class="page">
+
+  <p class="page-label">Discography — ディスコグラフィー</p>
+  <div class="accent-line"></div>
+  <h1 class="page-title">Sealtiel</h1>
+  <p class="page-subtitle">Singles & Releases — 2025 · 2026</p>
+
+  <div class="songs-grid">
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/yXoFtsUeFrU" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">01 — Single</span>
+        <h3 class="song-title">Stay</h3>
+        <p class="song-title-jp">とどまって</p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/JRPS9A_IeSE" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">02 — Single</span>
+        <h3 class="song-title">Lost in You</h3>
+        <p class="song-title-jp">あなたの中で迷う</p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/qRodg9AMWRo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">03 — Single</span>
+        <h3 class="song-title">My Heart Says Yes,<br>My Mind Says No</h3>
+        <p class="song-title-jp">心と頭の狭間で</p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/Vb4eF2tp2e8" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">04 — Single</span>
+        <h3 class="song-title">Stay ― 静かなつながり</h3>
+        <p class="song-title-jp">静かなつながり</p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/QKKhrBzH1Qc" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">05 — Single</span>
+        <h3 class="song-title">まだ屈折していない光</h3>
+        <p class="song-title-jp">LIGHT NOT YET REFRACTED</p>
+      </div>
+    </div>
+
+    <div class="song-card">
+      <div class="song-video">
+        <iframe src="https://www.youtube.com/embed/M8rWilL3aPo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="song-content">
+        <span class="song-number">06 — Single</span>
+        <h3 class="song-title">温かい言葉、冷たい夜</h3>
+        <p class="song-title-jp">Warm Words, Cold Night</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta-section">
+    <p class="cta-text">
+      カバー歌手、バンド、ボーカリストを探しています。<br>
+      7500曲以上があなたの声を待っています。<br>
+      Looking for cover singers, vocalists, and collaborators.<br>
+      Over 7500 songs are waiting for your voice.
+    </p>
+    <a href="index.html#mitmachen" class="cta-btn">参加する — Join</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-name">Sealtiel / שאלתיאל</div>
+  <a href="https://theartof.music" class="footer-link">theartof.music</a>
+</footer>
+
+</body>
+</html>
