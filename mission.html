@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創造の場 — Sealtiel / The Art of Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #080808;
+    --paper: #f0ebe0;
+    --gold: #c8a96e;
+    --gold-dim: rgba(200,169,110,0.15);
+    --muted: #6b6459;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97), transparent);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+  }
+
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--gold-dim);
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: 'Noto Serif JP', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+  }
+
+  .lang-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .lang-btn:not(.active):hover { color: var(--paper); }
+
+  .lang-sep {
+    width: 1px;
+    height: 28px;
+    background: var(--gold-dim);
+    flex-shrink: 0;
+  }
+
+  /* Content */
+  .lang-content { display: none; animation: langFade 0.5s ease; }
+  .lang-content.visible { display: block; }
+
+  /* Hero image */
+  .hero-image {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .hero-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    opacity: 0;
+    animation: rise 2s ease forwards 0.2s;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8,8,8,0.3) 0%,
+      rgba(8,8,8,0.1) 40%,
+      rgba(8,8,8,0.7) 75%,
+      rgba(8,8,8,1) 100%
+    );
+  }
+
+  .hero-image-caption {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 40px 60px;
+    opacity: 0;
+    animation: rise 1.5s ease forwards 1s;
+  }
+
+  .hero-image-caption blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3.5vw, 32px);
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(240,235,224,0.9);
+    line-height: 1.5;
+  }
+
+  .hero-image-caption blockquote em {
+    color: var(--paper);
+    font-style: normal;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 40px 100px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .hero-kicker {
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: rise 1.2s ease forwards 0.3s;
+  }
+
+  .hero-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(240,235,224,0.55);
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: rise 1.2s ease forwards 0.6s;
+  }
+
+  .hero-quote em { color: var(--paper); font-style: normal; }
+
+  .hero-body {
+    opacity: 0;
+    animation: rise 1.2s ease forwards 0.9s;
+  }
+
+  .hero-body p {
+    font-size: clamp(15px, 2.2vw, 17px);
+    font-weight: 300;
+    line-height: 2.5;
+    color: rgba(240,235,224,0.78);
+    margin-bottom: 28px;
+  }
+
+  .hero-body p:last-child { margin-bottom: 0; }
+  .gold { color: var(--gold); }
+
+  /* CTA */
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 64px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: rise 1.2s ease forwards 1.3s;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 36px;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s ease;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .btn-primary .btn-jp {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    margin-bottom: 5px;
+  }
+
+  .btn-primary .btn-en {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover { background: var(--paper); }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 16px 36px;
+    border: 1px solid rgba(200,169,110,0.35);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s ease;
+    align-self: center;
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); color: var(--paper); }
+
+  /* Goal */
+  .goal-section {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 100px 40px 120px;
+    border-top: 1px solid var(--gold-dim);
+    text-align: center;
+  }
+
+  .goal-tag {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .goal-figures {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .goal-figure { text-align: center; }
+
+  .goal-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 5.5vw, 56px);
+    font-weight: 300;
+    line-height: 1;
+    display: block;
+  }
+
+  .goal-cur {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    margin-top: 8px;
+    display: block;
+  }
+
+  .goal-sep {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    color: var(--gold-dim);
+    align-self: center;
+  }
+
+  .goal-note {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.1em;
+    margin-bottom: 56px;
+    line-height: 2.2;
+  }
+
+  .goal-cta {
+    display: inline-block;
+    padding: 18px 56px;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s ease;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .goal-cta .btn-jp {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    margin-bottom: 5px;
+  }
+
+  .goal-cta .btn-en {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+
+  .goal-cta:hover { background: var(--paper); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--gold-dim);
+    padding: 48px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--paper); }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes langFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 20px 24px; }
+    .hero, .goal-section { padding-left: 24px; padding-right: 24px; }
+    .cta-row { flex-direction: column; }
+    footer { padding: 36px 24px; flex-direction: column; gap: 16px; text-align: center; }
+    .goal-sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://theartof.music" class="nav-brand">Sealtiel — The Art of Music</a>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('jp')" id="btn-jp">日本語</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</nav>
+
+<!-- HERO IMAGE -->
+<div class="hero-image">
+  <img src="kinder-neon.png" alt="東京の夜、ネオンの前に座る子どもたち">
+  <div class="hero-image-overlay"></div>
+  <div class="hero-image-caption">
+    <blockquote id="hero-quote-jp">「<em>見てほしかった子どもたちがいる。</em>」</blockquote>
+    <blockquote id="hero-quote-en" style="display:none">"<em>There are children who just wanted to be seen.</em>"</blockquote>
+  </div>
+</div>
+
+<!-- JP -->
+<div id="content-jp" class="lang-content visible">
+  <section class="hero">
+    <div class="hero-kicker">創造の場 — Tokyo 2027</div>
+    <div class="hero-body">
+      <p>東京の夜。ネオンの光。<br>名前を呼ばれないまま、帰る場所に迷っている子どもたち。</p>
+      <p>家に帰れない。<br>帰れば、傷ついてしまうから。</p>
+      <p>制度からも、大人たちからも、世界からもこぼれ落ちている。</p>
+      <p>そして今、<br>彼らが最後に安心できた場所さえ、静かに消えつつある。<br>気づかれないままなら、そのまま消えてしまうかもしれない。</p>
+      <p>道で、少し困っている人を見かけたとき、<br>気づけば体が先に動いていることがある。<br>あの感覚に、少し似ているのかもしれない。</p>
+      <p>彼らが必要としているのは、<br>大きな支援でも、立派な計画でもない。</p>
+      <p><span class="gold">ただ、自分でいられる場所。</span></p>
+      <p>アトリエのように自由で、<br>避難所のように静かで、<br>自分を取り戻せる創造の宇宙。</p>
+      <p>その扉は、まだ開かれていない。<br>でも——<br><span class="gold">あなたの一歩で、開くかもしれない。</span></p>
+    </div>
+    <div class="cta-row">
+      <a href="donate.html" class="btn-primary">
+        <span class="btn-jp">この場所をつくる</span>
+        <span class="btn-en">Help Create This Place</span>
+      </a>
+      <a href="mission-detail.html" class="btn-secondary">→ ミッションを見る</a>
+    </div>
+  </section>
+</div>
+
+<!-- EN -->
+<div id="content-en" class="lang-content">
+  <section class="hero">
+    <div class="hero-kicker">Creative Sanctuary — Tokyo 2027</div>
+    <div class="hero-body">
+      <p>Tokyo at night. Neon light.<br>Children wandering with no place to return to, their names unspoken.</p>
+      <p>They cannot go home.<br>Home is where the hurt is.</p>
+      <p>They slip through institutions, through adults, through the world.</p>
+      <p>And now, even the last corners where they felt safe<br>are quietly disappearing.<br>If no one notices, they may vanish with them.</p>
+      <p>Sometimes, when you see someone struggling,<br>your body moves before your mind decides.<br>This may be something like that.</p>
+      <p>What they need is not a grand plan,<br>not a system, not a program.</p>
+      <p><span class="gold">A place where they can simply be.</span></p>
+      <p>A space as free as an atelier,<br>as quiet as a refuge,<br>a small creative universe where they can reclaim themselves.</p>
+      <p>The door is not open yet.<br>But—<br><span class="gold">your step may open it.</span></p>
+    </div>
+    <div class="cta-row" style="animation:none;opacity:1;">
+      <a href="donate.html" class="btn-primary">
+        <span class="btn-jp">この場所をつくる</span>
+        <span class="btn-en">Help Create This Place</span>
+      </a>
+      <a href="mission-detail.html" class="btn-secondary">→ View Mission</a>
+    </div>
+  </section>
+</div>
+
+<!-- GOAL -->
+<section class="goal-section">
+  <div class="goal-tag">目標 — Goal</div>
+  <div class="goal-figures">
+    <div class="goal-figure">
+      <span class="goal-num">¥165,000,000</span>
+      <span class="goal-cur">JPY</span>
+    </div>
+    <div class="goal-sep">/</div>
+    <div class="goal-figure">
+      <span class="goal-num">CHF 1,000,000</span>
+      <span class="goal-cur">Swiss Franc</span>
+    </div>
+  </div>
+  <div class="goal-note">
+    2027年1月まで — by January 2027<br>
+    これは終点ではない。最初の到達点。<br>
+    <span style="font-size:11px;">This is not the end. It is the first point of arrival.</span>
+  </div>
+  <a href="donate.html" class="goal-cta">
+    <span class="btn-jp">この場所をつくる</span>
+    <span class="btn-en">Help Create This Place</span>
+  </a>
+</section>
+
+<footer>
+  <div class="footer-name">Sealtiel / שאלתיאל</div>
+  <a href="https://theartof.music" class="footer-link">theartof.music</a>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.getElementById('content-jp').classList.remove('visible');
+    document.getElementById('content-en').classList.remove('visible');
+    document.getElementById('btn-jp').classList.remove('active');
+    document.getElementById('btn-en').classList.remove('active');
+    document.getElementById('content-' + lang).classList.add('visible');
+    document.getElementById('btn-' + lang).classList.add('active');
+    document.documentElement.lang = lang === 'jp' ? 'ja' : 'en';
+
+    document.getElementById('hero-quote-jp').style.display = lang === 'jp' ? 'block' : 'none';
+    document.getElementById('hero-quote-en').style.display = lang === 'en' ? 'block' : 'none';
+  }
+</script>
+
+</body>
+</html>

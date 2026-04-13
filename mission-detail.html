@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ミッション — Sealtiel / The Art of Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #080808;
+    --paper: #f0ebe0;
+    --gold: #c8a96e;
+    --gold-dim: rgba(200,169,110,0.15);
+    --muted: #6b6459;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97), transparent);
+  }
+
+  .nav-back {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-back::before {
+    content: '←';
+    color: var(--gold);
+  }
+
+  .nav-back:hover { color: var(--paper); }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* Main layout */
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 140px 40px 120px;
+  }
+
+  /* Header */
+  .page-kicker {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.2s;
+  }
+
+  .page-title {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    margin-bottom: 80px;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.5s;
+  }
+
+  /* Text blocks */
+  .text-block {
+    opacity: 0;
+    animation: rise 1s ease forwards 0.8s;
+    margin-bottom: 100px;
+  }
+
+  .block-lang {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .block-lang::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-dim);
+  }
+
+  .prose p {
+    font-size: clamp(14px, 2vw, 16px);
+    font-weight: 300;
+    line-height: 2.6;
+    color: rgba(240,235,224,0.82);
+    margin-bottom: 0;
+  }
+
+  /* Staggered line breaks for poetic effect */
+  .prose p + p {
+    margin-top: 0;
+  }
+
+  .prose .stanza {
+    margin-bottom: 36px;
+  }
+
+  .prose .stanza:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose .highlight {
+    color: var(--paper);
+  }
+
+  .prose .gold {
+    color: var(--gold);
+  }
+
+  /* Divider between JP and EN */
+  .lang-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--gold-dim);
+    margin: 80px 0;
+    position: relative;
+  }
+
+  .lang-divider::after {
+    content: '間';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--ink);
+    padding: 0 20px;
+    font-size: 16px;
+    color: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* Signature */
+  .signature {
+    text-align: right;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--gold-dim);
+  }
+
+  .sig-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .sig-sub {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* CTA */
+  .cta-section {
+    opacity: 0;
+    animation: rise 1s ease forwards 1s;
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid var(--gold-dim);
+    text-align: center;
+  }
+
+  .cta-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(240,235,224,0.5);
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .cta-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 18px 48px;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover { background: var(--paper); }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 18px 48px;
+    border: 1px solid rgba(200,169,110,0.3);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--gold-dim);
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--paper); }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 20px 24px; }
+    .page { padding: 120px 24px 100px; }
+    footer { padding: 32px 24px; }
+    .cta-row { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="mission.html" class="nav-back">ミッション</a>
+  <a href="https://theartof.music" class="nav-brand">Sealtiel</a>
+</nav>
+
+<div class="page">
+
+  <div class="page-kicker">創造の場 — The Creative Sanctuary</div>
+  <h1 class="page-title">わたしが目指している場所について</h1>
+
+  <!-- JP -->
+  <div class="text-block">
+    <div class="block-lang">日本語</div>
+    <div class="prose">
+
+      <div class="stanza">
+        <p>東京には、<br>
+        家に帰れない子どもたちがいます。</p>
+      </div>
+
+      <div class="stanza">
+        <p>家がないからではありません。<br>
+        家が、安心できる場所ではなくなってしまった<br>
+        子どもたちもいます。</p>
+      </div>
+
+      <div class="stanza">
+        <p>彼らは制度を避け、<br>
+        支援の網からこぼれ落ち、<br>
+        名前の代わりにラベルで呼ばれます。</p>
+      </div>
+
+      <div class="stanza">
+        <p>しかし、<br>
+        彼らが本当に必要としているものは、</p>
+        <p>制度でも、<br>
+        プログラムでも、<br>
+        立派な理念でもありません。</p>
+      </div>
+
+      <div class="stanza">
+        <p class="gold">必要なのは——<br>
+        自分でいられる場所。</p>
+      </div>
+
+      <div class="stanza">
+        <p>わたしがつくろうとしているのは、<br>
+        そのための「創造の場」です。</p>
+      </div>
+
+      <div class="stanza">
+        <p>アトリエであり、<br>
+        避難所であり、<br>
+        そして、まだ知らない自分に出会うための<br>
+        小さな宇宙のような場所。</p>
+      </div>
+
+      <div class="stanza">
+        <p class="highlight">描いてもいい。<br>
+        歌ってもいい。<br>
+        何もしなくてもいい。</p>
+      </div>
+
+      <div class="stanza">
+        <p class="gold">そこにいることが否定されない場所。<br>
+        そこにいるだけで、<br>
+        「自分でいていい」と感じられる場所。</p>
+      </div>
+
+      <div class="stanza">
+        <p>制度の外にしか届かない場所があると、感じています。<br>
+        だからこそ、その場所に立とうとしています。</p>
+      </div>
+
+      <div class="stanza">
+        <p>わたしは、その場所へ向かっています。<br>
+        いつか必ず、そこに立つために。</p>
+      </div>
+
+      <div class="stanza">
+        <p>時期ではなく、<br>
+        <span class="gold">意志が先にあります。</span></p>
+      </div>
+
+      <div class="stanza">
+        <p>これはプロジェクトではありません。<br>
+        ただ、そこに存在するための場所です。</p>
+      </div>
+
+      <div class="signature">
+        <span class="sig-name">Sealtiel</span>
+        <span class="sig-sub">theartof.music</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="lang-divider"></div>
+
+  <!-- EN -->
+  <div class="text-block" style="animation-delay: 0.2s;">
+    <div class="block-lang">English</div>
+    <div class="prose">
+
+      <div class="stanza">
+        <p>In Tokyo,<br>
+        there are children who do not go home at night.</p>
+      </div>
+
+      <div class="stanza">
+        <p>Not because they have no home.<br>
+        But because, for some of them,<br>
+        home is no longer a place of safety.</p>
+      </div>
+
+      <div class="stanza">
+        <p>They avoid institutions,<br>
+        slip through every safety net,<br>
+        and are given labels instead of names.</p>
+      </div>
+
+      <div class="stanza">
+        <p>But what they truly need<br>
+        is not a system,<br>
+        not a program,<br>
+        not a well-designed framework.</p>
+      </div>
+
+      <div class="stanza">
+        <p class="gold">What they need is—<br>
+        a place where they can simply be themselves.</p>
+      </div>
+
+      <div class="stanza">
+        <p>I am creating a space for that.<br>
+        A creative sanctuary.</p>
+      </div>
+
+      <div class="stanza">
+        <p>An atelier,<br>
+        a refuge,<br>
+        and a small universe where they can meet<br>
+        a version of themselves they have never met before.</p>
+      </div>
+
+      <div class="stanza">
+        <p class="highlight">They may draw.<br>
+        They may sing.<br>
+        They may sit in silence.</p>
+      </div>
+
+      <div class="stanza">
+        <p class="gold">A place where their existence is not denied.<br>
+        A place where "being here"<br>
+        is already enough.</p>
+      </div>
+
+      <div class="stanza">
+        <p>I believe there are spaces that cannot be reached<br>
+        from within systems.<br>
+        That is why I am choosing to stand there.</p>
+      </div>
+
+      <div class="stanza">
+        <p>I am moving toward this place.<br>
+        One day, I will stand there.</p>
+      </div>
+
+      <div class="stanza">
+        <p>Not driven by timing,<br>
+        <span class="gold">but by intention.</span></p>
+      </div>
+
+      <div class="stanza">
+        <p>This is not a project.<br>
+        It is a place for presence.</p>
+      </div>
+
+      <div class="signature">
+        <span class="sig-name">Sealtiel / שאלתיאל</span>
+        <span class="sig-sub">theartof.music</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <p class="cta-text">
+      あなたの一歩が、この場所を現実にする。<br>
+      Your step brings this sanctuary into reality.
+    </p>
+    <div class="cta-row">
+      <a href="donate.html" class="btn-primary">→ 支援する — Support</a>
+      <a href="mission.html" class="btn-secondary">← 戻る — Back</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-name">Sealtiel / שאלתיאל</div>
+  <a href="https://theartof.music" class="footer-link">theartof.music</a>
+</footer>
+
+</body>
+</html>
