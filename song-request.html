@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あなたへの歌 — Sealtiel / The Art of Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #06050f;
+    --paper: #f0ebe0;
+    --gold: #c8a96e;
+    --gold-dim: rgba(200,169,110,0.15);
+    --gold-border: rgba(200,169,110,0.25);
+    --muted: #6b6459;
+    --field-bg: rgba(200,169,110,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    background: linear-gradient(to bottom, rgba(6,5,15,0.98), transparent);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-home {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-home:hover { color: var(--paper); }
+
+  /* Page */
+  .page {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 110px 40px 100px;
+  }
+
+  /* Thank you header */
+  .thanks {
+    text-align: center;
+    margin-bottom: 64px;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.2s;
+  }
+
+  .thanks-symbol {
+    font-size: 28px;
+    margin-bottom: 24px;
+    display: block;
+    opacity: 0.6;
+  }
+
+  .thanks-jp {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .thanks-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+
+  /* Divider */
+  .divider {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 0 auto 48px;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.4s;
+  }
+
+  /* Intro text */
+  .intro {
+    text-align: center;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.6s;
+  }
+
+  .intro p {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 2.4;
+    color: rgba(240,235,224,0.7);
+  }
+
+  .intro p + p { margin-top: 16px; }
+
+  /* Form */
+  .form {
+    opacity: 0;
+    animation: rise 1s ease forwards 0.9s;
+  }
+
+  .field {
+    margin-bottom: 32px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .field-label span {
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-size: 9px;
+    text-transform: none;
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    background: var(--field-bg);
+    border: 1px solid var(--gold-border);
+    color: var(--paper);
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--gold);
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: rgba(240,235,224,0.2);
+    font-style: italic;
+  }
+
+  .field textarea {
+    height: 120px;
+    resize: vertical;
+    line-height: 2;
+  }
+
+  .field select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c8a96e' opacity='0.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .field select option {
+    background: #0a0818;
+    color: var(--paper);
+  }
+
+  /* Mood grid */
+  .mood-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .mood-option {
+    display: none;
+  }
+
+  .mood-label {
+    display: block;
+    border: 1px solid var(--gold-border);
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    transition: all 0.3s;
+    line-height: 1.6;
+  }
+
+  .mood-option:checked + .mood-label {
+    border-color: var(--gold);
+    color: var(--paper);
+    background: rgba(200,169,110,0.08);
+  }
+
+  .mood-label:hover {
+    border-color: rgba(200,169,110,0.4);
+    color: rgba(240,235,224,0.7);
+  }
+
+  .mood-jp {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .mood-en {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  /* Submit */
+  .submit-wrap {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .submit-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    padding: 18px 56px;
+    cursor: pointer;
+    transition: all 0.3s;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .submit-btn .btn-jp {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    margin-bottom: 3px;
+  }
+
+  .submit-btn .btn-en {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+
+  .submit-btn:hover { background: var(--paper); }
+
+  .submit-note {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* Success state */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 60px 0;
+  }
+
+  .success.visible { display: block; }
+
+  .success-symbol {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 24px;
+    opacity: 0.6;
+  }
+
+  .success-title {
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .success-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--gold-dim);
+    padding: 36px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 620px;
+    margin: 60px auto 0;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--paper); }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 580px) {
+    .page { padding: 100px 24px 80px; }
+    nav { padding: 18px 24px; }
+    .mood-grid { grid-template-columns: repeat(2, 1fr); }
+    footer { padding: 28px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">Sealtiel — The Art of Music</a>
+  <a href="index.html" class="nav-home">theartof.music</a>
+</nav>
+
+<div class="page">
+
+  <div class="thanks">
+    <span class="thanks-symbol">♪</span>
+    <h1 class="thanks-jp">深い感謝とともに</h1>
+    <p class="thanks-en">Thank you — your step just opened a door</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="intro">
+    <p>
+      あなたのために、一曲書きます。<br>
+      下のフォームに、あなた自身のことを少し教えてください。
+    </p>
+    <p>
+      名前、気分、そしてあなたについての一文。<br>
+      それだけで十分です。
+    </p>
+    <p style="color:var(--gold); font-size:12px; margin-top:8px;">
+      A song will be written only for you.<br>
+      Just tell me a little about yourself below.
+    </p>
+  </div>
+
+  <!-- Form -->
+  <form class="form" id="songForm" onsubmit="handleSubmit(event)">
+
+    <div class="field">
+      <label class="field-label" for="name">
+        お名前 <span>/ Your Name</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="どう呼べばいいですか？ / What shall I call you?"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="email">
+        メールアドレス <span>/ Email — to send your song</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="your@email.com"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="sentence">
+        あなた自身について、一文で <span>/ One sentence about yourself</span>
+      </label>
+      <textarea
+        id="sentence"
+        name="sentence"
+        placeholder="今の自分、大切にしていること、感じていること——なんでも。
+Anything about yourself — who you are, what you carry, what you feel right now."
+        required
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">
+        歌の雰囲気 <span>/ Mood of the song</span>
+      </label>
+      <div class="mood-grid">
+
+        <div>
+          <input type="radio" name="mood" id="mood1" value="静か・穏やか" class="mood-option">
+          <label for="mood1" class="mood-label">
+            <span class="mood-jp">静か</span>
+            <span class="mood-en">Quiet</span>
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="mood" id="mood2" value="暖かい・希望" class="mood-option">
+          <label for="mood2" class="mood-label">
+            <span class="mood-jp">温かい</span>
+            <span class="mood-en">Warm</span>
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="mood" id="mood3" value="強い・前へ" class="mood-option">
+          <label for="mood3" class="mood-label">
+            <span class="mood-jp">力強い</span>
+            <span class="mood-en">Strong</span>
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="mood" id="mood4" value="悲しい・切ない" class="mood-option">
+          <label for="mood4" class="mood-label">
+            <span class="mood-jp">切ない</span>
+            <span class="mood-en">Bittersweet</span>
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="mood" id="mood5" value="夜・内省" class="mood-option">
+          <label for="mood5" class="mood-label">
+            <span class="mood-jp">夜・深い</span>
+            <span class="mood-en">Deep / Night</span>
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="mood" id="mood6" value="自由" class="mood-option">
+          <label for="mood6" class="mood-label">
+            <span class="mood-jp">おまかせ</span>
+            <span class="mood-en">Your choice</span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="lang">
+        歌の言語 <span>/ Language of the song</span>
+      </label>
+      <select id="lang" name="lang">
+        <option value="日本語">日本語 — Japanese</option>
+        <option value="English">English</option>
+        <option value="Deutsch">Deutsch — German</option>
+        <option value="おまかせ" selected>おまかせ — Your choice</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="extra">
+        他に伝えたいこと <span>/ Anything else — optional</span>
+      </label>
+      <textarea
+        id="extra"
+        name="extra"
+        style="height:90px;"
+        placeholder="特別な人へ、大切な言葉、伝えたいこと——自由に。
+For someone special, a word you want to pass on — freely."
+      ></textarea>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn">
+        <span class="btn-jp">送る</span>
+        <span class="btn-en">Send your wishes</span>
+      </button>
+      <p class="submit-note">
+        送信後、3〜7日以内にあなたの歌をお届けします。<br>
+        Your song will arrive within 3–7 days.
+      </p>
+    </div>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success" id="successMsg">
+    <span class="success-symbol">♪</span>
+    <h2 class="success-title">受け取りました</h2>
+    <p class="success-sub">
+      あなたの言葉は届きました。<br>
+      3〜7日以内に、あなただけの歌を送ります。<br><br>
+      Your words have arrived.<br>
+      A song written only for you will follow.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-name">Sealtiel / שאלתיאל</div>
+  <a href="https://theartof.music" class="footer-link">theartof.music</a>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const form = document.getElementById('songForm');
+    const data = new FormData(form);
+
+    const body = {
+      name: data.get('name'),
+      email: data.get('email'),
+      sentence: data.get('sentence'),
+      mood: data.get('mood') || 'おまかせ',
+      lang: data.get('lang'),
+      extra: data.get('extra')
+    };
+
+    // Send to Formspree (replace with your endpoint)
+    fetch('https://formspree.io/f/mojyjane', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(res => {
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('successMsg').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        // Fallback: mailto
+        sendMailto(body);
+      }
+    })
+    .catch(() => sendMailto(body));
+  }
+
+  function sendMailto(body) {
+    const subject = encodeURIComponent('あなたへの歌 — ' + body.name);
+    const text = encodeURIComponent(
+      '名前: ' + body.name + '\n' +
+      'Email: ' + body.email + '\n' +
+      'について: ' + body.sentence + '\n' +
+      '雰囲気: ' + body.mood + '\n' +
+      '言語: ' + body.lang + '\n' +
+      'その他: ' + (body.extra || '—')
+    );
+    window.location.href = 'mailto:contact@theartof.music?subject=' + subject + '&body=' + text;
+  }
+</script>
+
+</body>
+</html>
