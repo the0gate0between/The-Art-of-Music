@@ -963,10 +963,10 @@ footer { padding: 4rem; text-align: center; }
 <body>
 
 <div class="audio-player" id="audio-player">
-  <img src="cover.jpg" style="width:44px; height:44px; object-fit:cover; flex-shrink:0;">
+  <img id="audio-cover" src="cover.jpg" style="width:44px; height:44px; object-fit:cover; flex-shrink:0;">
   <div style="display:flex; flex-direction:column; gap:3px;">
-    <span class="audio-label">まだ屈折していない光</span>
-    <span style="font-family:Cormorant Garamond,serif; font-size:0.55rem; letter-spacing:0.1em; color:var(--gold-dim);">Light Not Yet Refracted</span>
+    <span class="audio-label" id="audio-title-jp">Stay — 静かなつながり</span>
+    <span id="audio-title-en" style="font-family:Cormorant Garamond,serif; font-size:0.55rem; letter-spacing:0.1em; color:var(--gold-dim);">Quiet Connection</span>
   </div>
   <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
 </div>
@@ -979,9 +979,12 @@ footer { padding: 4rem; text-align: center; }
   </div>
 </div>
 
-<audio id="bg-audio" loop style="display:none;">
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
+<!-- SoundCloud hidden iframe (controlled via Widget API) -->
+<iframe id="sc-player"
+  src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/sealtiel_art/stay-extended&auto_play=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false&hide_related=true&visual=false&single_active=true"
+  width="0" height="0" frameborder="0" scrolling="no" allow="autoplay"
+  style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0; pointer-events:none;"></iframe>
+<script src="https://w.soundcloud.com/player/api.js"></script>
 
 <nav>
   <div class="nav-logo" onclick="showPage('home')">The Art of Music</div>
@@ -1601,20 +1604,27 @@ function showPage(name) {
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   window.scrollTo(0, 0);
   initReveal();
-  
+
   // Update URL hash
   const hashMap = { home: '', spenden: 'support', wahrheit: 'truth', mitmachen: 'join' };
   history.pushState(null, '', hashMap[name] ? '#' + hashMap[name] : window.location.pathname.replace(/#.*/, ''));
 
-  const audio = document.getElementById('bg-audio');
   const player = document.getElementById('audio-player');
   if (name === 'spenden' || name === 'wahrheit') {
     player.classList.add('visible');
+    // Track wechseln je nach Seite
+    if (name === 'wahrheit') {
+      setTrack('light');
+    } else {
+      setTrack('stay');
+    }
   } else {
     player.classList.remove('visible');
-    audio.pause();
-    audio.currentTime = 0;
-    document.getElementById('play-btn').textContent = '▶';
+    if (scWidget && scIsReady && scIsPlaying) {
+      scWidget.pause();
+    }
+    const btn = document.getElementById('play-btn');
+    if (btn) btn.textContent = '▶';
   }
 }
 
@@ -1854,16 +1864,107 @@ function proceedToDonate() {
   window.open('https://buy.stripe.com/cNibJ07kP092ftJbNGcwg00', '_blank');
 }
 
-function toggleAudio() {
-  const audio = document.getElementById('bg-audio');
+// ===== SoundCloud Widget Integration =====
+let scWidget = null;
+let scIsPlaying = false;
+let scIsReady = false;
+let scPendingPlay = false;
+
+const TRACKS = {
+  stay: {
+    url: 'https://soundcloud.com/sealtiel_art/stay-extended',
+    titleJP: 'Stay — 静かなつながり',
+    titleEN: 'Quiet Connection'
+  },
+  light: {
+    url: 'https://soundcloud.com/sealtiel_art/light-not-yet-refracted',
+    titleJP: 'まだ屈折していない光',
+    titleEN: 'Light Not Yet Refracted'
+  }
+};
+
+let currentTrackKey = 'stay';
+
+window.addEventListener('load', function() {
+  const iframe = document.getElementById('sc-player');
+  if (!iframe || !window.SC) {
+    setTimeout(initSCWidget, 500);
+    return;
+  }
+  initSCWidget();
+});
+
+function initSCWidget() {
+  if (!window.SC) {
+    setTimeout(initSCWidget, 300);
+    return;
+  }
+  const iframe = document.getElementById('sc-player');
+  if (!iframe) return;
+  scWidget = SC.Widget(iframe);
+  scWidget.bind(SC.Widget.Events.READY, function() {
+    scIsReady = true;
+    scWidget.setVolume(25);
+    if (scPendingPlay) {
+      scPendingPlay = false;
+      scWidget.play();
+    }
+  });
+  scWidget.bind(SC.Widget.Events.FINISH, function() {
+    const btn = document.getElementById('play-btn');
+    if (btn) btn.textContent = '▶';
+    scIsPlaying = false;
+  });
+  scWidget.bind(SC.Widget.Events.PAUSE, function() {
+    const btn = document.getElementById('play-btn');
+    if (btn) btn.textContent = '▶';
+    scIsPlaying = false;
+  });
+  scWidget.bind(SC.Widget.Events.PLAY, function() {
+    const btn = document.getElementById('play-btn');
+    if (btn) btn.textContent = '⏸';
+    scIsPlaying = true;
+  });
+}
+
+function setTrack(key) {
+  if (key === currentTrackKey || !TRACKS[key]) return;
+  currentTrackKey = key;
+  const track = TRACKS[key];
+  const titleJP = document.getElementById('audio-title-jp');
+  const titleEN = document.getElementById('audio-title-en');
+  if (titleJP) titleJP.textContent = track.titleJP;
+  if (titleEN) titleEN.textContent = track.titleEN;
   const btn = document.getElementById('play-btn');
-  if (audio.paused) {
-    audio.volume = 0.25;
-    audio.play();
-    btn.textContent = '⏸';
+  if (btn) btn.textContent = '▶';
+  scIsPlaying = false;
+  if (scWidget && scIsReady) {
+    scWidget.load(track.url, {
+      auto_play: false,
+      callback: function() {
+        scWidget.setVolume(25);
+      }
+    });
+  }
+}
+
+function toggleAudio() {
+  const btn = document.getElementById('play-btn');
+  if (!scWidget) {
+    scPendingPlay = true;
+    if (btn) btn.textContent = '⏸';
+    return;
+  }
+  if (!scIsReady) {
+    scPendingPlay = true;
+    if (btn) btn.textContent = '⏸';
+    return;
+  }
+  if (scIsPlaying) {
+    scWidget.pause();
   } else {
-    audio.pause();
-    btn.textContent = '▶';
+    scWidget.setVolume(25);
+    scWidget.play();
   }
 }
 
