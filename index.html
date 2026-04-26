@@ -1040,6 +1040,44 @@ footer { padding: 4rem; text-align: center; }
   </div>
 </nav>
 
+<!-- Emergency strip — quiet & dismissible -->
+<div id="emergency-strip" style="
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: linear-gradient(to right, rgba(160,64,32,0.15), rgba(160,64,32,0.25), rgba(160,64,32,0.15));
+  border-bottom: 1px solid rgba(200,169,110,0.2);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: rgba(232,213,163,0.85);
+  font-style: italic;
+">
+  <a href="emergency.html" style="color: inherit; text-decoration: none; transition: color 0.3s;"
+     onmouseover="this.style.color='var(--gold)'"
+     onmouseout="this.style.color='rgba(232,213,163,0.85)'">
+    今夜、誰かが床に倒れている。 — Tonight someone lies on a floor. <span style="opacity:0.6; margin-left:0.5em;">→</span>
+  </a>
+  <button onclick="document.getElementById('emergency-strip').style.display='none'; document.querySelector('nav').style.top='0'; document.body.style.paddingTop='0';"
+    style="background:transparent; border:none; color: rgba(232,213,163,0.5); cursor:pointer; font-size:1rem; line-height:1; padding:0 4px;"
+    onmouseover="this.style.color='var(--gold)'"
+    onmouseout="this.style.color='rgba(232,213,163,0.5)'">×</button>
+</div>
+<style>
+  body { padding-top: 36px; }
+  nav { top: 36px !important; }
+  @media (max-width: 600px) {
+    #emergency-strip { font-size: 0.65rem !important; padding: 6px 16px !important; }
+    body { padding-top: 30px; }
+    nav { top: 30px !important; }
+  }
+</style>
+
 <!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <div class="particles" id="particles"></div>
@@ -1319,6 +1357,7 @@ footer { padding: 4rem; text-align: center; }
     <div class="footer-spenden">
       <p class="footer-spenden-text" data-i18n="footer-spenden-text">東京の路上に生きる子どもたちのために。</p>
       <a class="footer-spenden-btn" onclick="showPage('spenden')" data-i18n="footer-spenden-btn">支援する</a>
+      <a class="footer-spenden-btn" style="margin-left:1rem; border-color:rgba(160,64,32,0.4); color:rgba(232,213,163,0.85);" href="emergency.html">緊急 · Emergency</a>
       <a class="footer-spenden-btn" style="margin-left:1rem;" onclick="showPage('wahrheit')" data-i18n="footer-wahrheit-btn">真実</a>
     </div>
     <ul class="footer-links">
@@ -1890,7 +1929,10 @@ function getWahrheitJP() {
     <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">ただ、そこにいること。</p>
     <div class="spenden-divider"></div>
     <p class="spenden-text">これが不都合な真実だ。<br>東京の路上で子どもたちが眠っているということではない。</p>
-    <p class="spenden-text" style="color:var(--light); font-size:1.1rem;">あなたは今、これを読み終えた —<br>そしてこれから決める、<br>スクロールを続けるかどうか。</p>`;
+    <p class="spenden-text" style="color:var(--light); font-size:1.1rem;">あなたは今、これを読み終えた —<br>そしてこれから決める、<br>スクロールを続けるかどうか。</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic; font-size:0.95rem;">2027年1月を待たない理由が、<br>今日生まれました。</p>
+    <p style="text-align:center; margin-top:2rem;"><a href="emergency.html" style="display:inline-block; padding:0.9rem 2rem; border:1px solid rgba(160,64,32,0.5); color:rgba(232,213,163,0.9); text-decoration:none; font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(160,64,32,0.5)'; this.style.color='rgba(232,213,163,0.9)'">緊急 — Emergency</a></p>`;
 }
 
 function getWahrheitEN() {
@@ -1924,7 +1966,10 @@ function getWahrheitEN() {
     <p class="spenden-text" style="color:var(--light); font-size:1.1rem; letter-spacing:0.08em;">1,000,000 CHF by January 2027.</p>
     <p class="spenden-text" style="color:var(--ash); font-style:italic;">Not for an organization.<br>Not for a building.<br>Not for a project with a logo and annual report.</p>
     <p class="spenden-text">For an arrival.<br>For presence.<br>For what no system can provide:</p>
-    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">Being there.</p>`;
+    <p class="spenden-text" style="color:var(--gold); font-size:1.3rem; font-style:italic; letter-spacing:0.1em;">Being there.</p>
+    <div class="spenden-divider"></div>
+    <p class="spenden-text" style="color:var(--ash); font-style:italic; font-size:0.95rem;">A reason not to wait until January 2027<br>was born today.</p>
+    <p style="text-align:center; margin-top:2rem;"><a href="emergency.html" style="display:inline-block; padding:0.9rem 2rem; border:1px solid rgba(160,64,32,0.5); color:rgba(232,213,163,0.9); text-decoration:none; font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; transition:all 0.3s;" onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(160,64,32,0.5)'; this.style.color='rgba(232,213,163,0.9)'">緊急 — Emergency</a></p>`;
 }
 
 // Initialize wahrheit page

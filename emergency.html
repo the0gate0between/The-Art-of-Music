@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>緊急 — Tonight Someone Lies on a Floor / Sealtiel</title>
+<meta name="description" content="今夜、誰かが床に倒れている。待つことはできない緊急基金。Tonight, in Tokyo, a child is lying on a floor. The fund that cannot wait.">
+<meta property="og:title" content="今夜、誰かが床に倒れている。— Tonight Someone Lies on a Floor.">
+<meta property="og:description" content="2027年を待つことができない理由が、今日生まれました。">
+<meta property="og:url" content="https://theartof.music/emergency.html">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #080808;
+    --ink-soft: #0f0e0c;
+    --paper: #f0ebe0;
+    --gold: #c8a96e;
+    --gold-bright: #e8d5a3;
+    --gold-dim: rgba(200,169,110,0.15);
+    --gold-border: rgba(200,169,110,0.25);
+    --muted: #6b6459;
+    --ember: #a04020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 200px;
+    background: radial-gradient(ellipse at top, rgba(160,64,32,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97), transparent);
+  }
+
+  .nav-back {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-back::before { content: '←'; color: var(--gold); }
+  .nav-back:hover { color: var(--paper); }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 140px 32px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .mark::before, .mark::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(160,64,32,0.4), transparent);
+    max-width: 80px;
+  }
+
+  .hero {
+    margin-bottom: 80px;
+    text-align: center;
+  }
+
+  .hero-jp {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.5s;
+  }
+
+  .hero-jp em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .hero-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: rgba(240,235,224,0.65);
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.8s;
+  }
+
+  .divider {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+    margin: 64px auto;
+  }
+
+  .truth {
+    margin-bottom: 80px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.1s;
+  }
+
+  .truth-block { margin-bottom: 36px; }
+  .truth-block:last-child { margin-bottom: 0; }
+
+  .truth-jp {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 2.4;
+    color: rgba(240,235,224,0.85);
+    margin-bottom: 14px;
+  }
+
+  .truth-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.9;
+    color: rgba(240,235,224,0.55);
+  }
+
+  .truth-jp .gold, .truth-en .gold {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .bridge {
+    border-left: 1px solid var(--gold);
+    padding: 28px 32px;
+    margin-bottom: 80px;
+    background: rgba(200,169,110,0.02);
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.3s;
+  }
+
+  .bridge p {
+    font-size: 13px;
+    line-height: 2.1;
+    color: rgba(240,235,224,0.7);
+    margin-bottom: 12px;
+  }
+
+  .bridge p:last-child { margin-bottom: 0; }
+
+  .bridge p strong {
+    color: var(--gold-bright);
+    font-weight: 400;
+  }
+
+  .bridge-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12.5px !important;
+    color: rgba(240,235,224,0.5) !important;
+  }
+
+  .donate-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.5s;
+  }
+
+  .amounts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.6s;
+  }
+
+  .amount-btn {
+    display: block;
+    background: transparent;
+    border: 1px solid var(--gold-border);
+    color: var(--paper);
+    padding: 24px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .amount-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(200,169,110,0.05);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .amount-btn:hover::before { opacity: 1; }
+  .amount-btn:hover { border-color: rgba(200,169,110,0.5); }
+
+  .amount-btn.featured {
+    grid-column: span 2;
+    border-color: rgba(200,169,110,0.35);
+  }
+
+  .amount-btn.featured::after {
+    content: '♪';
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: var(--gold);
+    opacity: 0.55;
+  }
+
+  .btn-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .btn-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    display: block;
+  }
+
+  .btn-gift {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--gold-bright);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  .song-note {
+    border-left: 1px solid var(--gold);
+    padding: 24px 28px;
+    margin: 24px 0 40px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.7s;
+  }
+
+  .song-note p {
+    font-size: 13px;
+    line-height: 2;
+    color: rgba(240,235,224,0.7);
+  }
+
+  .song-note p strong {
+    color: var(--gold-bright);
+    font-weight: 400;
+  }
+
+  .free-btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--gold-border);
+    color: var(--muted);
+    padding: 20px 24px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin-bottom: 80px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.8s;
+  }
+
+  .free-btn:hover {
+    border-color: rgba(200,169,110,0.4);
+    color: var(--paper);
+  }
+
+  .promise {
+    border-top: 1px solid var(--gold-dim);
+    border-bottom: 1px solid var(--gold-dim);
+    padding: 40px 0;
+    margin-bottom: 64px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 2s;
+  }
+
+  .promise-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .promise-jp {
+    font-size: 13px;
+    line-height: 2;
+    color: rgba(240,235,224,0.75);
+    margin-bottom: 14px;
+  }
+
+  .promise-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: rgba(240,235,224,0.5);
+  }
+
+  .footer {
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 2.2s;
+  }
+
+  .footer-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 28px;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .footer-sub {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 20px 24px; }
+    .container { padding: 120px 24px 80px; }
+    .amounts { grid-template-columns: 1fr; }
+    .amount-btn.featured { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">The Art of Music</a>
+  <a href="https://theartof.music" class="nav-brand">Sealtiel</a>
+</nav>
+
+<div class="container">
+
+  <div class="mark">緊急 — Urgency</div>
+
+  <section class="hero">
+    <h1 class="hero-jp">今夜、誰かが<br><em>床に倒れている。</em></h1>
+    <p class="hero-en">Tonight, somewhere in Tokyo,<br>a child is lying on a floor.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="truth">
+
+    <div class="truth-block">
+      <p class="truth-jp">昨日、ある女の子が東京で見つかりました。<br>唇が青く、薬を飲みすぎて。<br>彼女は生き延びました。<br><span class="gold">生き延びない子もいます。</span></p>
+      <p class="truth-en">Yesterday, in Tokyo, a girl was found.<br>Her lips were blue. She had swallowed too many pills.<br>She survived.<br><span class="gold">Others do not.</span></p>
+    </div>
+
+    <div class="truth-block">
+      <p class="truth-jp">2027年1月、わたしは東京へ移ります。<br>でも昨日の話を聞いて、<br><span class="gold">2027年は遅すぎる</span>と感じました。</p>
+      <p class="truth-en">In January 2027, I will move to Tokyo.<br>But after what I heard yesterday,<br><span class="gold">January 2027 is too late.</span></p>
+    </div>
+
+  </section>
+
+  <div class="bridge">
+    <p><strong>今日いただくご支援は、今週中に動きます。</strong><br>東京・歌舞伎町・福岡で<br>子どもたちと直接働く信頼できる方々の手へ。</p>
+    <p class="bridge-en"><em>What is given today moves this week.<br>Directly into the hands of trusted people working with these children in Tokyo, Kabukicho, and Fukuoka.</em></p>
+    <p style="margin-top:18px;">並行して、<strong>「創造の場」</strong>の建設は続いています。<br>今日の助けと、2027年の場所は、<br>同じひとつの動きです。</p>
+    <p class="bridge-en"><em>The long-term Creative Sanctuary is still being built.<br>Today's help and tomorrow's place are one and the same movement.</em></p>
+  </div>
+
+  <p class="donate-label">支援する — Give</p>
+
+  <div class="amounts">
+    <a href="https://buy.stripe.com/6oU00i5cHg80ftJbNGcwg01" class="amount-btn" target="_blank">
+      <span class="btn-amount">¥1,000</span>
+      <span class="btn-label">≈ CHF 6</span>
+    </a>
+    <a href="https://buy.stripe.com/5kQ7sK34z7BuftJeZScwg02" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥2,000</span>
+      <span class="btn-label">≈ CHF 12</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+    <a href="https://buy.stripe.com/5kQ28qeNh5tmgxN5picwg03" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥3,000</span>
+      <span class="btn-label">≈ CHF 18</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+    <a href="https://buy.stripe.com/8x26oGdJd4piftJ192cwg04" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥5,000</span>
+      <span class="btn-label">≈ CHF 30</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+    <a href="https://buy.stripe.com/9B6fZgcF93le0yP7xqcwg05" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥10,000</span>
+      <span class="btn-label">≈ CHF 60</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+    <a href="https://buy.stripe.com/7sY5kC20v7Bu81h04Ycwg06" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥25,000</span>
+      <span class="btn-label">≈ CHF 150</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+    <a href="https://buy.stripe.com/cNi4gyeNhg8095l192cwg07" class="amount-btn featured" target="_blank">
+      <span class="btn-amount">¥50,000</span>
+      <span class="btn-label">≈ CHF 300</span>
+      <span class="btn-gift">あなたへの歌 — A song written only for you</span>
+    </a>
+  </div>
+
+  <div class="song-note">
+    <p>
+      <strong>¥2,000以上のご支援には、あなたへの歌をお届けします。</strong><br>
+      お名前と、あなたについての一文をお聞かせください。<br>
+      あなたのために、一曲書きます。
+    </p>
+    <p style="margin-top:14px; font-family:'Cormorant Garamond',serif; font-style:italic; color:rgba(240,235,224,0.5); font-size:12px; line-height:1.85;">
+      <strong style="color:var(--gold-bright); font-weight:400;">From ¥2,000</strong> — a song written only for you.<br>
+      Share your name and one sentence about yourself.<br>
+      Sealtiel will compose a song just for you.
+    </p>
+  </div>
+
+  <a href="https://buy.stripe.com/7sY7sKax1f3W0yPeZScwg08" class="free-btn" target="_blank">
+    自由な金額で支援する — Any amount
+  </a>
+
+  <div class="promise">
+    <p class="promise-label">透明性の約束 — Promise of Transparency</p>
+    <p class="promise-jp">毎月、短い報告を公開します。<br>いくら集まったか。どこへ流れたか。<br>子どもたちの名前も顔も語りません。<br><span style="color:var(--gold);">守るべきものは、語られないこと。</span></p>
+    <p class="promise-en"><em>Every month, a short public report.<br>How much was given. Where it went.<br>No names, no faces, no stories of the children.<br>What must be protected is what remains unspoken.</em></p>
+  </div>
+
+  <div class="footer">
+    <p class="footer-quote">— 願生 · Ganshō —<br><span style="font-size:11px;">"Born of a prayer."</span></p>
+    <div class="footer-name">Sealtiel / שאלתיאל</div>
+    <div class="footer-sub">真封 真</div>
+    <a href="https://theartof.music" class="footer-link">theartof.music</a>
+  </div>
+
+</div>
+
+</body>
+</html>
