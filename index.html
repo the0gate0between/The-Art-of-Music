@@ -1861,7 +1861,7 @@ function openDonateModal() {
 
 function proceedToDonate() {
   document.getElementById('donate-modal').classList.remove('active');
-  window.open('https://buy.stripe.com/cNibJ07kP092ftJbNGcwg00', '_blank');
+  window.location.href = 'donate.html';
 }
 
 // ===== SoundCloud Widget Integration =====
@@ -1904,7 +1904,7 @@ function initSCWidget() {
   scWidget = SC.Widget(iframe);
   scWidget.bind(SC.Widget.Events.READY, function() {
     scIsReady = true;
-    scWidget.setVolume(25);
+    scWidget.setVolume(40);
     if (scPendingPlay) {
       scPendingPlay = false;
       scWidget.play();
@@ -1942,7 +1942,7 @@ function setTrack(key) {
     scWidget.load(track.url, {
       auto_play: false,
       callback: function() {
-        scWidget.setVolume(25);
+        scWidget.setVolume(40);
       }
     });
   }
@@ -1963,7 +1963,7 @@ function toggleAudio() {
   if (scIsPlaying) {
     scWidget.pause();
   } else {
-    scWidget.setVolume(25);
+    scWidget.setVolume(40);
     scWidget.play();
   }
 }
