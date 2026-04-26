@@ -963,7 +963,7 @@ footer { padding: 4rem; text-align: center; }
 <body>
 
 <div class="audio-player" id="audio-player">
-  <img id="audio-cover" src="cover.jpg" style="width:44px; height:44px; object-fit:cover; flex-shrink:0;">
+  <img id="audio-cover" src="stay-cover.jpg" style="width:44px; height:44px; object-fit:cover; flex-shrink:0;">
   <div style="display:flex; flex-direction:column; gap:3px;">
     <span class="audio-label" id="audio-title-jp">Stay — 静かなつながり</span>
     <span id="audio-title-en" style="font-family:Cormorant Garamond,serif; font-size:0.55rem; letter-spacing:0.1em; color:var(--gold-dim);">Quiet Connection</span>
@@ -1874,12 +1874,14 @@ const TRACKS = {
   stay: {
     url: 'https://soundcloud.com/sealtiel_art/stay-extended',
     titleJP: 'Stay — 静かなつながり',
-    titleEN: 'Quiet Connection'
+    titleEN: 'Quiet Connection',
+    cover: 'stay-cover.jpg'
   },
   light: {
     url: 'https://soundcloud.com/sealtiel_art/light-not-yet-refracted',
     titleJP: 'まだ屈折していない光',
-    titleEN: 'Light Not Yet Refracted'
+    titleEN: 'Light Not Yet Refracted',
+    cover: 'cover.jpg'
   }
 };
 
@@ -1933,8 +1935,10 @@ function setTrack(key) {
   const track = TRACKS[key];
   const titleJP = document.getElementById('audio-title-jp');
   const titleEN = document.getElementById('audio-title-en');
+  const cover = document.getElementById('audio-cover');
   if (titleJP) titleJP.textContent = track.titleJP;
   if (titleEN) titleEN.textContent = track.titleEN;
+  if (cover && track.cover) cover.src = track.cover;
   const btn = document.getElementById('play-btn');
   if (btn) btn.textContent = '▶';
   scIsPlaying = false;
