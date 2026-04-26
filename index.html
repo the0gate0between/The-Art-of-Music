@@ -75,6 +75,29 @@ nav {
 }
 .nav-links a:hover, .nav-links a.active { color: var(--gold); }
 
+.nav-links a.nav-truth {
+  position: relative;
+  color: rgba(200,169,110,0.7);
+}
+.nav-links a.nav-truth::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: rgba(200,169,110,0.35);
+  transition: background 0.4s;
+}
+.nav-links a.nav-truth:hover,
+.nav-links a.nav-truth.active {
+  color: var(--gold);
+}
+.nav-links a.nav-truth:hover::after,
+.nav-links a.nav-truth.active::after {
+  background: var(--gold);
+}
+
 /* Mission & Donate nav buttons */
 .nav-actions {
   display: flex;
@@ -992,7 +1015,7 @@ footer { padding: 4rem; text-align: center; }
     <li><a href="#artists" onclick="showPage('home')" id="nav-artists" data-i18n="nav-artists">アーティスト</a></li>
     <li><a href="#music" onclick="showPage('home')" id="nav-music" data-i18n="nav-music">音楽</a></li>
     <li><a href="#about" onclick="showPage('home')" id="nav-about" data-i18n="nav-about">について</a></li>
-    <li><a onclick="showPage('wahrheit')" id="nav-wahrheit" data-i18n="nav-wahrheit">真実</a></li>
+    <li><a onclick="showPage('wahrheit')" id="nav-wahrheit" class="nav-truth" data-i18n="nav-wahrheit">真実</a></li>
     <li><a onclick="showPage('mitmachen')" id="nav-mitmachen" data-i18n="nav-mitmachen">参加する</a></li>
     <li><a onclick="showPage('spenden')" id="nav-spenden" data-i18n="nav-spenden" style="color: var(--void); background: var(--gold); padding: 0.5rem 1.2rem; letter-spacing: 0.15em; transition: all 0.3s;">支援する</a></li>
   </ul>
