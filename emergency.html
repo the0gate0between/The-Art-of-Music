@@ -83,6 +83,7 @@
   .hero-image {
     position: relative;
     width: 100%;
+    margin-top: 80px;
     height: 100vh;
     min-height: 700px;
     overflow: hidden;
@@ -546,14 +547,159 @@
     .hero-logo { margin-top: 80px; }
     .hero-image { min-height: 600px; }
   }
+  /* ============================================ */
+  /* CROSS-NAV — appears below main nav            */
+  /* ============================================ */
+  .cross-nav {
+    position: fixed;
+    top: 70px; left: 0; right: 0;
+    z-index: 49;
+    padding: 14px 40px 18px;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.85), transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: crossNavFade 1.2s ease forwards 0.6s;
+  }
+
+  .cross-nav-row {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .cross-nav-link {
+    font-family: 'Cinzel', 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(200,169,110,0.7);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.4s ease;
+    padding: 4px 0;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .cross-nav-link:hover {
+    color: var(--gold);
+  }
+
+  .cross-nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease, left 0.4s ease;
+  }
+
+  .cross-nav-link:hover::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* Emergency button — 1.5x size, ember dot accent */
+  .cross-nav-emergency {
+    font-family: 'Cinzel', 'Cormorant Garamond', serif;
+    font-size: 16px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(200,169,110,0.85);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    padding: 6px 18px;
+    position: relative;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cross-nav-emergency::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgb(200,80,55);
+    box-shadow: 0 0 12px rgba(200,80,55,0.6);
+    animation: emberPulse 2.4s ease-in-out infinite;
+  }
+
+  .cross-nav-emergency:hover {
+    color: var(--gold);
+    letter-spacing: 0.36em;
+  }
+
+  @keyframes emberPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  @keyframes crossNavFade {
+    to { opacity: 1; }
+  }
+
+  /* Adjust hero-image / page top padding to make room for cross-nav */
+  .has-cross-nav .hero-image,
+  .has-cross-nav .page {
+    padding-top: 130px;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .cross-nav {
+      top: 60px;
+      padding: 10px 20px 14px;
+      gap: 8px;
+    }
+    .cross-nav-row {
+      gap: 1.4rem;
+    }
+    .cross-nav-link {
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+    }
+    .cross-nav-emergency {
+      font-size: 13px;
+      letter-spacing: 0.26em;
+      padding: 4px 12px;
+      gap: 9px;
+    }
+    .cross-nav-emergency::before {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-back">The Art of Music</a>
+  <a href="https://theartof.music" class="nav-back">The Art of Music</a>
   <a href="https://theartof.music" class="nav-brand">Sealtiel</a>
 </nav>
+<!-- Cross-nav -->
+<div class="cross-nav">
+  <div class="cross-nav-row">
+    <a href="mission.html" class="cross-nav-link">ミッション · Mission</a>
+    <a href="https://theartof.music/#wahrheit" class="cross-nav-link">真実 · Truth</a>
+    <a href="donate.html" class="cross-nav-link">支援 · Support</a>
+    <a href="mission-detail.html" class="cross-nav-link">この場所をつくる · Help Create</a>
+  </div>
+</div>
+
 
 <!-- HERO IMAGE -->
 <section class="hero-image">
